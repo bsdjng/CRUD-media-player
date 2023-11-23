@@ -43,4 +43,15 @@ Ons project, genaamd OurTube, heeft als doel een dynamische en toegankelijke vid
 
 # Database ontwerp:
 
-![Alt text](databaseDesign.png?raw=true "Optional Title")
+![Alt text](images/databaseDesign.png?raw=true "Optional Title")
+
+# Wireframes
+
+1. main page
+   ![Alt text](images/mainpagewireframe.png?raw=true "Optional Title")
+
+1. account page
+   ![Alt text](images/profilepage.png?raw=true "Optional Title")
+
+1. video page
+   ![Alt text](images/videopage.png?raw=true "Optional Title")
