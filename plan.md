@@ -54,4 +54,4 @@ Ons project, genaamd OurTube, heeft als doel een dynamische en toegankelijke vid
    ![Alt text](images/profilepage.png?raw=true "Optional Title")
 
 1. video page
-   ![Alt text](images/videopage.png?raw=true "Optional Title")
+   ![Alt text](images/videoplayerpage.png?raw=true "Optional Title")
