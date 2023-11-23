@@ -6,9 +6,41 @@
 2. Hendrik de Jong
 3. Jelte Weegerink
 
-# Beschrijving
+Projectplan OurTube:
 
-Wij gaan een hele koele website maken Genaamd OurTube.
-Op deze website kan je video's uploaden, liken en delen. Er komt ook een inlogsysteem in, maar je hebt geen account nodig om de site te bezoeken.
+# Inleiding:
+
+Ons project, genaamd OurTube, heeft als doel een dynamische en toegankelijke videoplatform te creëren. Dit plan schetst de belangrijkste doelstellingen, functies en stappen om dit doel te bereiken.
+
+# Doelstellingen:
+
+1. Ontwikkeling van een gebruiksvriendelijke website genaamd OurTube.
+2. Implementatie van functionaliteiten voor video-upload, liken en delen.
+3. Invoering van een veilig en efficiënt inlogsysteem.
+4. Toegankelijkheid voor bezoekers zonder verplichte accountregistratie.
+
+# Projectfasen:
+
+1. Ontwikkeling van de Website:
+
+- Creëren van een aantrekkelijk en intuïtief ontwerp.
+- Implementeren van de basisstructuur en navigatie van OurTube.
+
+2. Inlogsysteem:
+
+- Ontwikkeling van een veilig en betrouwbaar inlogsysteem.
+- Toepassen van personalisatiemogelijkheden voor geregistreerde gebruikers.
+
+3. Videofunctionaliteiten:
+
+- Integratie van uploadmogelijkheden voor video's.
+- Implementatie van like- en deelopties voor gebruikers.
+
+4. Toegankelijkheid:
+
+- Zorgen voor een naadloze gebruikerservaring zonder verplichte accountregistratie.
+- Implementatie van gastfunctionaliteiten voor niet-geregistreerde bezoekers.
+
+# Database ontwerp:
 
 ![Alt text](databaseDesign.png?raw=true "Optional Title")
