@@ -9,7 +9,9 @@
 </head>
 <body>
 <?php
-    require("Header.php")
+    require("Connection.php");
+    require("Header.php");
+    require("Search.php");
 ?>
 </body>
 </html>
