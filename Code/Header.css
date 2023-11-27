@@ -74,6 +74,7 @@
     user-select: none;
     background-color: transparent;
     font-size: xx-large;
+    outline:none
 }
 
 #SearchBarsubmit{
@@ -85,4 +86,5 @@
     width: 100px;
     border: none;
     background-color: transparent;
+    outline:none
 }
