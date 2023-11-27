@@ -8,7 +8,7 @@
 </head>
 <body>
 <?php
-
+    require("Header.php")
 ?>
 </body>
 </html>
