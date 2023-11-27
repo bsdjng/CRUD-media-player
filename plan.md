@@ -6,8 +6,6 @@
 2. Hendrik de Jong
 3. Jelte Weegerink
 
-Projectplan OurTube:
-
 # Inleiding:
 
 Ons project, genaamd OurTube, heeft als doel een dynamische en toegankelijke videoplatform te creëren. Dit plan schetst de belangrijkste doelstellingen, functies en stappen om dit doel te bereiken.
@@ -50,8 +48,62 @@ Ons project, genaamd OurTube, heeft als doel een dynamische en toegankelijke vid
 1. main page
    ![Alt text](images/mainpagewireframe.png?raw=true "Optional Title")
 
-1. account page
+2. account page
    ![Alt text](images/profilepage.png?raw=true "Optional Title")
 
-1. video page
+3. video page
    ![Alt text](images/videoplayerpage.png?raw=true "Optional Title")
+
+# Taakverdeling
+
+1. Bas
+
+- Database:
+
+  - Tabel aanmaken en opbouwen
+  - Tabel connecties vastleggen.
+
+- Login systeem beveiligen/verifiëren
+- Mediaspeler invoegen
+- Pauzeer, voor- en achteruitspoel functies inbouwen
+- SQL injectie beveiliging
+
+- View systeem maken(wanneer krijgt een video een view?)
+- Video link generatie systeem maken
+
+2. Hendrik
+
+- Database:
+
+  - Tabel connecties vastleggen.
+  - PHP Connectie naar de database.
+
+- Pagina bouwen waar gebruikers kunnen uploaden
+
+- Werkende zoekbalk maken
+
+- Maak de website responsive voor verschillende apparaten en formaten
+
+- View systeem maken(wanneer krijgt een video een view?)
+- Video link generatie systeem maken
+
+3. Jelte
+
+- Wireframe realiteit maken:
+
+  - Background, header en icons bouwen.
+
+- Sign-up en login system bouwen.
+
+- Pagina bouwen waar gebruikers kunnen uploaden
+
+- Maak de website responsive voor verschillende apparaten en formaten
+- UI buttons werkend maken
+- Button routes werkend maken
+
+4. Extra taken
+
+- Abonneer functie toevoegen
+- Zoekbalk gebruiksvriendelijk maken(dat je niet iets precies hoeft na te typen)
+- Afpeellijst mogelijkheid
+- Algoritme maken en rijk worden
