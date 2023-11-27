@@ -1,6 +1,6 @@
 *{
     padding: 0px;
-    margin: 0px
+    margin: 0px;
 }
 
 .Header{
@@ -73,7 +73,8 @@
     user-select: none;
     background-color: transparent;
     font-size: xx-large;
-    outline:none
+    outline:none;
+    color: ghostwhite;
 }
 
 #SearchBarsubmit{
