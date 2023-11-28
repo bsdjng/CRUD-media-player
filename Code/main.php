@@ -29,7 +29,7 @@
 
         if ($videos->rowCount() > 0) {
             while ($video = $videos->fetch()) {
-                if (isset($video['thumbnail_image'])) {
+                if (isset($video)) {
         ?><ol class="GridItem">
                         <li class="thumbnail">
                             <?php
