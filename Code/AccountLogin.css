@@ -41,7 +41,8 @@
     padding: 5px; /* Add some padding */
 }
 
-.showPasswordCheckbox {
-    align-self: flex-end;
-    margin-top: 5px;
+#passwordShide{
+    height: 20px;
+    position: absolute;
+    right: 15%;
 }

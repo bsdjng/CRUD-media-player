@@ -15,7 +15,7 @@
                 </li>
                 <li class="ListItem">
                     <input type="password" class="inputField" name="password" id="Password" placeholder="Password*" required>
-                    <input type="checkbox" class="showPasswordCheckbox" onclick="myFunction()">
+                    <img id="passwordShide" src="../images/hidden.png" alt="show password" onclick="show_hide_pass()">
                 </li>
                 <li class="ListItem">
                     <input type="submit" value="Login">
@@ -29,12 +29,15 @@
 
 
     <script>
-        function myFunction() {
+        function show_hide_pass() {
             var x = document.getElementById("Password");
+            var img = document.getElementById("passwordShide");
             if (x.type === "password") {
                 x.type = "text";
+                img.src = "../images/visible.png";
             } else {
                 x.type = "password";
+                img.src = "../images/hidden.png";
             }
         } 
     </script>
