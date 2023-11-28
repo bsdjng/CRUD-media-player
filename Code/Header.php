@@ -6,5 +6,5 @@
             <input id="SearchBarsubmit" type="submit" value="">
         </form>
     </li>
-    <li class="HeaderItem"><a id="HeaderUserLink" href="User.php"></a></li>
+    <li class="HeaderItem"><a id="HeaderUserLink" href="AccountLogin.php"></a></li>
 </ol>
