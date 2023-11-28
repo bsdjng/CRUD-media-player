@@ -17,7 +17,7 @@
                     <input type="password" class="inputField" name="password" id="Password" placeholder="Password*" required>
                     <img id="passwordShide" src="../images/hidden.png" alt="show password" onclick="show_hide_pass()">
                 </li>
-                <li class="ListItem">
+                <li>
                     <input type="submit" value="Login">
                 </li>
             </ul>
