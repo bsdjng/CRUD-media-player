@@ -15,6 +15,7 @@ body{
     overflow: hidden; */
 }
 .GridItem2{
+    list-style: none;
     /* width: 75%;
     list-style: none;
     display: flex;
