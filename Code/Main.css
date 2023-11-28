@@ -1,0 +1,48 @@
+body{
+    background-color: cadetblue;
+}
+.MediaGrid{
+    margin: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1svh;
+}
+.GridItem{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+}
+.GridItem2{
+    width: 75%;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.thumbnail {
+    border-radius: 30px;
+    height: 100%;
+    overflow: hidden;
+    border-bottom: solid black 5px;
+}
+
+.thumbnail img {
+    
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.PFP{
+    object-fit: cover;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+}
+
+@media only screen and (max-width: 600px)  {
+    .MediaGrid{
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
