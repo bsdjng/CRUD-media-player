@@ -19,9 +19,7 @@
                             $imageSrc = "data:image/png;base64," . base64_encode($video['thumbnail_image']);
                             // laat alle variabelen zien
                             ?>
-                        <li class="thumbnail" style="background-image:url('<?php echo $imageSrc; ?>') ;">
-                            
-                        </li>
+                        <li class="thumbnail" style="background-image:url('<?php echo $imageSrc; ?>') ;"></li>
                         <li>
                             <?php
                             echo $video['video_name'];
@@ -34,7 +32,7 @@
                                     // blob decoderen
                                     $imageSrc = "data:image/png;base64," . base64_encode($account['profile_picture']);
                                     // laat alle variabelen zien
-                                    echo '<img class="PFP" src="' . $imageSrc . '" alt="Image">';
+                                    echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';                                    // echo '<img class="PFP" src="' . $imageSrc . '" alt="Image">';
                                     echo $account['username'];
                                 }
                             }
