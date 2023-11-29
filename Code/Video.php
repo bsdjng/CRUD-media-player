@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="Header.css">
 </head>
 
-<body style="background-color: violet;">
+<body style="background-color: cadetblue;">
     <?php
     require("Header.php");
     require("Connection.php");
@@ -64,41 +64,43 @@
         echo "Video ID not provided.";
     }
     ?>
-</body>
-<script>
-    function toggleLike(videoId, buttonId, action, accountId) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    // Log the response to the console
-                    console.log('Response:', xhr.responseText);
+    <script>
+        function toggleLike(videoId, buttonId, action, accountId) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Log the response to the console
+                        console.log('Response:', xhr.responseText);
 
-                    // Update the UI with the response
-                    document.getElementById(buttonId).innerHTML = xhr.responseText;
+                        // Update the UI with the response
+                        document.getElementById(buttonId).innerHTML = xhr.responseText;
 
-                    // Toggle the state
-                    toggleState(buttonId);
-                } else {
-                    console.error('Error:', xhr.status);
+                        // Toggle the state
+                        toggleState(buttonId);
+                    } else {
+                        console.error('Error:', xhr.status);
+                    }
                 }
-            }
-        };
+            };
 
-        // Update the path to your add_like.php script
-        var url = 'add_like.php?videoId=' + videoId + '&action=' + action + '&accountId=' + accountId;
-        xhr.open('GET', url, true);
-        xhr.send();
-    }
-
-    function toggleState(buttonId) {
-        var button = document.getElementById(buttonId);
-        var currentState = button.getAttribute('data-state');
-
-        if (currentState === 'liked') {
-            button.setAttribute('data-state', 'unliked');
-        } else {
-            button.setAttribute('data-state', 'liked');
+            // Update the path to your add_like.php script
+            var url = 'add_like.php?videoId=' + videoId + '&action=' + action + '&accountId=' + accountId;
+            xhr.open('GET', url, true);
+            xhr.send();
         }
-    }
-</script>
+
+        function toggleState(buttonId) {
+            var button = document.getElementById(buttonId);
+            var currentState = button.getAttribute('data-state');
+
+            if (currentState === 'liked') {
+                button.setAttribute('data-state', 'unliked');
+            } else {
+                button.setAttribute('data-state', 'liked');
+            }
+        }
+    </script>
+</body>
+
+</html>
