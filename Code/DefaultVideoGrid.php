@@ -1,10 +1,10 @@
 <div class="MediaGrid">
     <?php
 
-    $sqlVideos = "SELECT * FROM videos";
+    $sqlVideos = "SELECT id, account_id, video_name, views, likes, dislikes, thumbnail_image, created_at FROM videos";
     $videos = $pdo->query($sqlVideos);
 
-    $sqlAccounts = "SELECT * FROM accounts";
+    $sqlAccounts = "SELECT username, id, profile_picture FROM accounts";
     $accountsResult = $pdo->query($sqlAccounts);
 
     // pleur het in een array

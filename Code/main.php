@@ -15,9 +15,9 @@
     require("Connection.php");
     require("Header.php");
     require("Search.php");
-    if(empty($_GET["search"]) == false){
+    if (empty($_GET["search"]) == false) {
         var_dump($_GET["search"]);
-    }else {
+    } else {
         require("DefaultVideoGrid.php");
     }
     ?>
