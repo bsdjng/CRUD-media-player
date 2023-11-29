@@ -1,6 +1,6 @@
-/* .body{
+body{
     background-color: cadetblue;
-} */
+}
 
 video{
     width: 1200px;
@@ -10,4 +10,17 @@ video{
     left: 50%;
     transform: translate(-50%,-50%);
     background-color: black;
+}
+
+#likeButton, #dislikeButton{
+    width: 100px; 
+    height: 50px;
+}
+
+#likeButton{
+    background-color: green;
+}
+
+#dislikeButton{
+    background-color: red;
 }
