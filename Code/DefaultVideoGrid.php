@@ -20,36 +20,42 @@
                     // laat alle variabelen zien
                     ?>
                     <li class="thumbnail" style="background-image:url('<?php echo $imageSrc; ?>') ;"></li>
-                    <li>
+                    <li class="VidName" >
                         <?php
                         echo $video['video_name'];
                         ?>
                     </li>
                     <li>
-                        <?php // zoek de uploader van de video
-                        foreach ($accounts as $account) {
-                            if ($account['id'] == $video['account_id']) {
-                                // blob decoderen
-                                $imageSrc = "data:image/png;base64," . base64_encode($account['profile_picture']);
-                                // laat alle variabelen zien
-                                echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';                                    // echo '<img class="PFP" src="' . $imageSrc . '" alt="Image">';
-                                echo $account['username'];
-                            }
-                        }
-                        ?>
-                    </li>
-                    <li>
                         <ol class="GridItem2">
                             <li>
-                                <?php
-                                echo "views: " . $video['views'];
-                                ?>
+                            <?php // zoek de uploader van de video
+                                foreach ($accounts as $account) {
+                                    if ($account['id'] == $video['account_id']) {
+                                        // blob decoderen
+                                        $imageSrc = "data:image/png;base64," . base64_encode($account['profile_picture']);
+                                        // laat alle variabelen zien
+                                        echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';                                    // echo '<img class="PFP" src="' . $imageSrc . '" alt="Image">';
+                                        echo $account['username'];
+                                    }
+                                }
+                            ?>
                             </li>
-
                             <li>
-                                <?php
-                                echo "Date Posted: " .  $video['created_at'];
-                                ?>
+                                <li>
+                                    <ol class="GridItem3">
+                                        <li>
+                                            <?php
+                                            echo "views: " . $video['views'];
+                                            ?>
+                                        </li>
+
+                                        <li>
+                                            <?php
+                                            echo "Date Posted: " .  $video['created_at'];
+                                            ?>
+                                        </li>
+                                    </ol>
+                                </li>
                             </li>
                         </ol>
                     </li>
