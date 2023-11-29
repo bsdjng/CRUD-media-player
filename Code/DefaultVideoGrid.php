@@ -13,7 +13,7 @@
     if ($videos->rowCount() > 0) {
         while ($video = $videos->fetch()) {
             if (isset($video)) {
-    ?><ol class="GridItem">
+    ?><ol class="GridItem" onclick="redirectToVideo(<?php echo $video['id']; ?>)">
                     <?php
                     // blob decoderen
                     $imageSrc = "data:image/png;base64," . base64_encode($video['thumbnail_image']);
@@ -92,3 +92,8 @@
     ?>
 
 </div>
+<script>
+    function redirectToVideo(videoId) {
+        window.location.href = "Video.php?id=" + videoId;
+    }
+</script>
