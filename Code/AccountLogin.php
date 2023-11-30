@@ -13,17 +13,15 @@
             <h2>please log into a account</h2>
         </div>
         <div id="div2">
-            <form action="" id="form1">
+            <form action="Main.php" method="post" id="form1">
                 <input type="email" name="" placeholder="email" id="email" required><br>
                 <input type="password" name="" placeholder="Password" id="password" required>
             </form>
             <div id="div3">
-                <a href=""><button class="Button" >Sign Up Here</button></a>
+                <a href="CreateAccount.php"><button class="Button" >Sign Up Here</button></a>
                 <button class="Button" type="submit" form="form1">log in</button>
             </div>
-
         </div>
     </div>
-
 </body>
 </html>
