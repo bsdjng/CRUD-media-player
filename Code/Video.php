@@ -7,6 +7,7 @@
     <title>OurTube</title>
     <link rel="stylesheet" href="Header.css">
     <link rel="stylesheet" href="VideoStyle.css">
+    <link rel="stylesheet" href="Comments.css">
 </head>
 
 <body>
@@ -14,9 +15,6 @@
     require("Header.php");
     require("Connection.php");
     require("Search.php");
-
-
-
 
     if (isset($_GET['id'])) {
         //haal video id uit de $_GET
@@ -26,26 +24,29 @@
         $videos->bindParam(':videoId', $videoId, PDO::PARAM_INT);
         $videos->execute();
 
-        //count likes
+        //tel likes
         $sqlLikes = "SELECT COUNT(*) FROM likes WHERE video_id = " . $videoId . " AND dislike = 0";
         $likesResult = $pdo->query($sqlLikes);
         $likes = $likesResult->fetchAll(PDO::FETCH_ASSOC);
 
-        //count dislikes
+        //tel dislikes
         $sqlDislikes = "SELECT COUNT(*) FROM likes WHERE video_id = " . $videoId . " AND dislike = 1";
         $DislikesResult = $pdo->query($sqlDislikes);
         $dislikes = $DislikesResult->fetchAll(PDO::FETCH_ASSOC);
 
-        //search account that posted the video
+        //zoek account die de video heeft geupload
         if ($videos->rowCount() > 0) {
             $video = $videos->fetch(PDO::FETCH_ASSOC);
             $sqlAccounts = "SELECT id, username, profile_picture FROM accounts WHERE id = " . $video['account_id'];
             $accountsResult = $pdo->query($sqlAccounts);
             $accounts = $accountsResult->fetchAll(PDO::FETCH_ASSOC);
     ?>
+
+
+            <!-- display de video informatie -->
             <div class="centerdiv">
                 <div class="video-container">
-                    <video controls>
+                    <video id="myVideo" controls autoplay ontimeupdate="updateProgress()">
                         <source src="http://localhost/CRUD-media-player/Usercontent/<?php echo $accounts[0]['id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -87,6 +88,11 @@
                         ?>
                     </div>
                 </div>
+                <div class="text-container">
+                    <?php
+                    require('Comments.php');
+                    ?>
+                </div>
             </div>
 
     <?php
@@ -97,10 +103,34 @@
     } else {
         echo "Video ID not provided.";
     }
+
     ?>
+
+
     <script>
+        var video = document.getElementById("myVideo");
+        var hasWatched30Percent = false;
+        var videoId = <?php echo $videoId; ?>;
+        var accountId = <?php echo $accounts[0]['id']; ?>;
+
+        function updateProgress() {
+            // deze functie checked of je 30 procent van de video hebt gezien en add dan een view
+            var currentTime = video.currentTime;
+            var duration = video.duration;
+
+            var percentageWatched = (currentTime / duration) * 100;
+
+            if (percentageWatched >= 30 && !hasWatched30Percent) {
+                hasWatched30Percent = true;
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "addView.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send("videoId=" + videoId + "&accountId=" + accountId);
+            }
+        }
+
         function likeVideo(videoId, accountId) {
-            // Use AJAX to call like.php asynchronously
+            // redirect naar like.php
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "like.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -108,7 +138,7 @@
         }
 
         function dislikeVideo(videoId, accountId) {
-            // Use AJAX to call dislike.php asynchronously
+            // redirect naar dislike.php
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "dislike.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
