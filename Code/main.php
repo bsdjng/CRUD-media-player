@@ -12,6 +12,7 @@
 
 <body>
     <?php
+    session_start();
     require("Connection.php");
     require("Header.php");
     require("Search.php");

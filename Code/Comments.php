@@ -6,23 +6,23 @@ $stmtComments->bindParam(':videoId', $videoId, PDO::PARAM_INT);
 $stmtComments->execute();
 $comments = $stmtComments->fetchAll(PDO::FETCH_ASSOC);
 
-
+if ($_SESSION['logged_in']) {
 ?>
-
-<div id="commentsection">
-    <form action="" method="post" id="commentSubmitForm">
-        <input type="textfield" placeholder="Share your comment!" id="newCommentText"><br>
-        <input type="submit" value="Submit" id="commentSubmitButton">
-    </form>
+    <div id="commentsection">
+        <form action="" method="post" id="commentSubmitForm">
+            <input type="textfield" placeholder="Share your comment!" id="newCommentText" autocomplete="off"><br>
+            <input type="submit" value="Submit" id="commentSubmitButton">
+        </form>
     <?php
-    foreach ($comments as $comment) {
-        // zoek de accountinformatie voor elke comment
-        $sqlAccountComments = "SELECT id, username, profile_picture FROM accounts WHERE id = :account_id";
-        $stmtAccountComments = $pdo->prepare($sqlAccountComments);
-        $newId = $comment['account_id'];
-        $stmtAccountComments->bindParam(':account_id', $newId, PDO::PARAM_INT);
-        $stmtAccountComments->execute();
-        $commentUser = $stmtAccountComments->fetchAll(PDO::FETCH_ASSOC);
+}
+foreach ($comments as $comment) {
+    // zoek de accountinformatie voor elke comment
+    $sqlAccountComments = "SELECT id, username, profile_picture FROM accounts WHERE id = :account_id";
+    $stmtAccountComments = $pdo->prepare($sqlAccountComments);
+    $newId = $comment['account_id'];
+    $stmtAccountComments->bindParam(':account_id', $newId, PDO::PARAM_INT);
+    $stmtAccountComments->execute();
+    $commentUser = $stmtAccountComments->fetchAll(PDO::FETCH_ASSOC);
     ?>
         <div class="comment">
             <div class="commentPFP">
@@ -44,6 +44,6 @@ $comments = $stmtComments->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     <?php
-    }
+}
     ?>
-</div>
+    </div>

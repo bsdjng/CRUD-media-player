@@ -12,6 +12,7 @@
 
 <body>
     <?php
+    session_start();
     require("Header.php");
     require("Connection.php");
     require("Search.php");
@@ -67,13 +68,18 @@
                             ?>
                         </div>
                         <div>
-                            <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
-                                <?php echo $likes[0]['COUNT(*)']; ?>
-                            </button>
+                            <?php
+                            if ($_SESSION['logged_in']) { ?>
+                                <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
+                                    <?php echo $likes[0]['COUNT(*)']; ?>
+                                </button>
 
-                            <button id="dislikeButton" onclick="dislikeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
-                                <?php echo $dislikes[0]['COUNT(*)']; ?>
-                            </button>
+                                <button id="dislikeButton" onclick="dislikeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
+                                    <?php echo $dislikes[0]['COUNT(*)']; ?>
+                                </button>
+                            <?php } else {
+                                echo "Log-in to like this video!";
+                            } ?>
 
                         </div>
                     </div>
