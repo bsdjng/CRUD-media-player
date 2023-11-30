@@ -1,71 +1,55 @@
-*{
+body{
     margin: 0;
     padding: 0;
+    background-color: cadetblue;
+
 }
-/* CSS styles */
-.AccountCenterDiv {
-    position: absolute;
+
+#CenterDiv{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
-    height: 60vh; /* Adjust the height */
-    background-color: blanchedalmond;
-}
-
-.Formlist {
-    list-style: none;
+    width: 30%;
+    height: 70%;
+    position: absolute;
+    background-color: ghostwhite;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
-    width: 100%; /* Make the width full */
-    max-width: 300px; /* Set a maximum width */
+    justify-content: center;
+    border: solid black;
+    background-color: blueviolet;
+    border-radius: 50px;
 }
-
-.ListItem {
+#div1{
+    height: 20%;
+}
+#div2{
+    height: 80%;
     width: 100%;
-    background-color: antiquewhite;
-    border: solid black 3px;
-    border-radius: 10px;
-    margin-bottom: 10px; /* Add some bottom margin */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
-
-.inputField {
-    width: calc(100% - 10px); /* Adjust input width */
-    border: none;
-    background-color: transparent;
-    padding: 5px; /* Add some padding */
+#div3{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
 }
-
-#passwordShide{
-    height: 20px;
-    position: absolute;
-    right: 15%;
+#email, #password{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: 350px;
+    height: 50px;
+    border-radius: 20px;
+    border: solid black;
+    font-size: 150%;
 }
-input[type=submit]{
-    display: inline-block;
-    padding: 15px 60px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color: #fff;
-    background-color: #04AA6D;
-    border: none;
-    border-radius: 200px;
-    box-shadow: 0 9px #999;
-}
-
-input[type=submit]:hover{
-    background-color: #3e8e41;
-}
-.button:active {
-    background-color: #3e8e41;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
+.Button{
+    height: 45px;
+    width: 130px;
+    border: solid black;
+    border-radius: 20px;
 }

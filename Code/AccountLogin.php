@@ -7,39 +7,23 @@
     <link rel="stylesheet" href="AccountLogin.css">
 </head>
 <body>
-<div class="AccountCenterDiv">
-        <form action="login.php" method="post">
-            <ul class="Formlist">
-                <li class="ListItem">
-                    <input class="inputField" type="email" name="email" placeholder="Email*" required>
-                </li>
-                <li class="ListItem">
-                    <input type="password" class="inputField" name="password" id="Password" placeholder="Password*" required>
-                    <img id="passwordShide" src="../images/hidden.png" alt="show password" onclick="show_hide_pass()">
-                </li>
-                <li>
-                    <input type="submit" value="Login">
-                </li>
-            </ul>
-        </form>
-        <a href=""><h3>Create account</h3></a>
-        <a href=""><h3>Having Trouble Signing in?</h3></a>
+    <div id="CenterDiv">
+        <div id="div1">
+            <h1>login page</h1>
+            <h2>please log into a account</h2>
+        </div>
+        <div id="div2">
+            <form action="" id="form1">
+                <input type="email" name="" placeholder="email" id="email" required><br>
+                <input type="password" name="" placeholder="Password" id="password" required>
+            </form>
+            <div id="div3">
+                <a href=""><button class="Button" >Sign Up Here</button></a>
+                <button class="Button" type="submit" form="form1">log in</button>
+            </div>
+
+        </div>
     </div>
-    
 
-
-    <script>
-        function show_hide_pass() {
-            var x = document.getElementById("Password");
-            var img = document.getElementById("passwordShide");
-            if (x.type === "password") {
-                x.type = "text";
-                img.src = "../images/visible.png";
-            } else {
-                x.type = "password";
-                img.src = "../images/hidden.png";
-            }
-        } 
-    </script>
 </body>
 </html>
