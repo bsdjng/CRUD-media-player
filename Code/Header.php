@@ -12,14 +12,14 @@ var_dump($_SESSION);
         </form>
     </li>
     <li class="HeaderItem"><a id="HeaderUserLink" href="<?php
-                                                        if (isset($_SESSION['logged_in'])) {
-                                                            if ($_SESSION['logged_in'] == true) {
-                                                                echo "Account.php";
-                                                            } else {
-                                                                echo "AccountLogin.php";
-                                                            }
-                                                        } else {
-                                                            echo "AccountLogin.php";
-                                                        }
-                                                        ?>"></a></li>
+        if (isset($_SESSION['logged_in'])) {
+            if ($_SESSION['logged_in'] == true) {
+                echo "Account.php";
+            } else {
+                echo "AccountLogin.php";
+            }
+        } else {
+            echo "AccountLogin.php";
+        }
+        ?>"></a></li>
 </ol>

@@ -6,18 +6,16 @@ body{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 1svh;
+    list-style: none;
 }
 .GridItem{
     list-style: none;
 }
-.GridItem2{
+.View_Time{
+    list-style: none;
     display: flex;
     flex-direction: row;
-    list-style: none;
     justify-content: space-evenly;
-}
-.GridItem3{
-    list-style: none;
 }
 .thumbnail {
     height: 200px;
@@ -33,8 +31,10 @@ body{
     font-size: 25px;
     
 }
-
-
+.PFP_Name{
+    display: flex;
+    flex-direction: row;
+}
 .PFP{
     height: 40px;
     width: 40px;
@@ -42,6 +42,18 @@ body{
     background-size: cover;
     border-radius: 50%;
 }
+
+.Vid_Name{
+    font-size: 25px;
+    margin-left: 10px;
+    align-self: center;
+}
+
+.creator_name{
+    font-size: 20px;
+    align-self: center;   
+}
+
 
 @media only screen and (max-width: 600px)  {
     .MediaGrid{

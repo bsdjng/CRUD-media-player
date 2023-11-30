@@ -9,7 +9,7 @@ $comments = $stmtComments->fetchAll(PDO::FETCH_ASSOC);
 if ($_SESSION['logged_in']) {
 ?>
     <div id="commentsection">
-        <form action="" method="post" id="commentSubmitForm">
+        <form action="Comments.php" method="post" id="commentSubmitForm">
             <input type="textfield" placeholder="Share your comment!" id="newCommentText" autocomplete="off"><br>
             <input type="submit" value="Submit" id="commentSubmitButton">
         </form>

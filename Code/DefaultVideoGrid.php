@@ -13,73 +13,68 @@
     if ($videos->rowCount() > 0) {
         while ($video = $videos->fetch()) {
             if (isset($video)) {
-    ?><ol class="GridItem" onclick="redirectToVideo(<?php echo $video['id']; ?>)">
-                    <?php
+    ?>
+    <ol class="GridItem" onclick="redirectToVideo(<?php echo $video['id']; ?>)">
+        <?php
+            // blob decoderen
+            $thumbnail_img = "data:image/png;base64," . base64_encode($video['thumbnail_image']);
+            foreach ($accounts as $account) {
+                if ($account['id'] == $video['account_id']) {
                     // blob decoderen
-                    $imageSrc = "data:image/png;base64," . base64_encode($video['thumbnail_image']);
+                    $account_img = "data:image/png;base64," . base64_encode($account['profile_picture']);
                     // laat alle variabelen zien
-                    ?>
-                    <li class="thumbnail" style="background-image:url('<?php echo $imageSrc; ?>') ;"></li>
-                    <li class="VidName">
-                        <?php
-                        echo $video['video_name'];
-                        ?>
-                    </li>
-                    <li>
-                        <ol class="GridItem2">
-                            <li>
-                                <?php // zoek de uploader van de video
-                                foreach ($accounts as $account) {
-                                    if ($account['id'] == $video['account_id']) {
-                                        // blob decoderen
-                                        $imageSrc = "data:image/png;base64," . base64_encode($account['profile_picture']);
-                                        // laat alle variabelen zien
-                                        echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';                                    // echo '<img class="PFP" src="' . $imageSrc . '" alt="Image">';
-                                        echo $account['username'];
-                                    }
-                                }
-                                ?>
-                            </li>
-                            <li>
-                            <li>
-                                <ol class="GridItem3">
-                                    <li>
-                                        <?php
-                                        echo "views: " . $video['views'];
-                                        ?>
-                                    </li>
+                    // echo $account['username'];
 
-                                    <li>
-                                        <?php
-                                        $createdDateTime = new DateTime($video['created_at']);
-                                        // huidige tijd
-                                        $currentDateTime = new DateTime();
-                                        // Tijdverschil berekenen
-                                        $timeDifference = $currentDateTime->diff($createdDateTime);
-                                        // Display the time difference
-                                        if ($timeDifference->days > 0) {
-                                            if ($timeDifference->days == 1) {
-                                                echo $timeDifference->days . ' day ago';
-                                            } else {
-                                                echo $timeDifference->days . ' days ago';
-                                            }
-                                        } elseif ($timeDifference->h > 0) {
-                                            if ($timeDifference->h == 1) {
-                                                echo $timeDifference->h . ' hours ago';
-                                            } else {
-                                                echo $timeDifference->h . ' hours ago';
-                                            }
-                                        } else {
-                                            echo $timeDifference->i . ' minutes ago';
-                                        }
-                                        ?>
-                                    </li>
-                                </ol>
-                            </li>
-                    </li>
-                </ol>
+                }
+            }
+        ?>
+        <li class="thumbnail" style="background-image:url('<?php echo $thumbnail_img; ?>') ;"></li>
+        <li>
+            <div class="PFP_Name"><?php
+                echo '<div class="PFP" style="background-image: url(\'' . $account_img . '\');"></div>';
+                echo '<p class="Vid_Name">' . $video['video_name'] . '</p>';?>
+            </div>
+        </li>
+        <li>
+            <?php
+                echo '<p class="creator_name">' . $account['username'] . '</p>';
+            ?>
+        </li>
+        <li>
+            <ol class="View_Time">
+                <li>
+                    <?php
+                    echo "views: " . $video['views'];
+                    ?>
                 </li>
-                </ol>
+                <li>
+                    <?php
+                    $createdDateTime = new DateTime($video['created_at']);
+                    // huidige tijd
+                    $currentDateTime = new DateTime();
+                    // Tijdverschil berekenen
+                    $timeDifference = $currentDateTime->diff($createdDateTime);
+                    // Display the time difference
+                    if ($timeDifference->days > 0) {
+                        if ($timeDifference->days == 1) {
+                            echo $timeDifference->days . ' day ago';
+                        } else {
+                            echo $timeDifference->days . ' days ago';
+                        }
+                    } elseif ($timeDifference->h > 0) {
+                        if ($timeDifference->h == 1) {
+                            echo $timeDifference->h . ' hours ago';
+                        } else {
+                            echo $timeDifference->h . ' hours ago';
+                        }
+                    } else {
+                        echo $timeDifference->i . ' minutes ago';
+                    }
+                    ?>
+                </li>
+            </ol>
+        </li>
+    </ol>
     <?php
 
             } else {
