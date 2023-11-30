@@ -11,15 +11,17 @@ var_dump($_SESSION);
             <input id="SearchBarsubmit" type="submit" value="">
         </form>
     </li>
-    <li class="HeaderItem"><a id="HeaderUserLink" href="<?php
-        if (isset($_SESSION['logged_in'])) {
-            if ($_SESSION['logged_in'] == true) {
-                echo "Account.php";
-            } else {
-                echo "AccountLogin.php";
-            }
+    <li class="HeaderItem"><a id="HeaderUserLink" href="
+    <?php
+    if (isset($_SESSION['logged_in'])) {
+        if ($_SESSION['logged_in'] == true) {
+            echo "Account.php";
         } else {
             echo "AccountLogin.php";
         }
-        ?>"></a></li>
+    } else {
+        echo "AccountLogin.php";
+    }
+    ?>"></a></li>
+
 </ol>

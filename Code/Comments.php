@@ -6,7 +6,7 @@ $stmtComments->bindParam(':videoId', $videoId, PDO::PARAM_INT);
 $stmtComments->execute();
 $comments = $stmtComments->fetchAll(PDO::FETCH_ASSOC);
 
-if ($_SESSION['logged_in']) {
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
 ?>
     <div id="commentsection">
         <form action="Comments.php" method="post" id="commentSubmitForm">
@@ -14,6 +14,8 @@ if ($_SESSION['logged_in']) {
             <input type="submit" value="Submit" id="commentSubmitButton">
         </form>
     <?php
+} else {
+    echo "Log-in to comment on this video!";
 }
 foreach ($comments as $comment) {
     // zoek de accountinformatie voor elke comment

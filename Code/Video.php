@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="Comments.css">
 </head>
 
+
+
 <body>
     <?php
     session_start();
@@ -47,7 +49,7 @@
             <!-- display de video informatie -->
             <div class="centerdiv">
                 <div class="video-container">
-                    <video id="myVideo" controls autoplay ontimeupdate="updateProgress()">
+                    <video id="myVideo" controls ontimeupdate="updateProgress()">
                         <source src="http://localhost/CRUD-media-player/Usercontent/<?php echo $accounts[0]['id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -69,17 +71,54 @@
                         </div>
                         <div>
                             <?php
-                            if ($_SESSION['logged_in']) { ?>
-                                <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
-                                    <?php echo $likes[0]['COUNT(*)']; ?>
-                                </button>
+                            if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+                                // Query om te kijken of het geliked of gedisliked is
+                                $sqlCheckLike = "SELECT dislike FROM likes WHERE video_id = :videoId AND account_id = :accountId";
+                                $checkLike = $pdo->prepare($sqlCheckLike);
+                                $checkLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                                $checkLike->bindParam(':accountId', $_SESSION['account_id'], PDO::PARAM_INT);
+                                $checkLike->execute();
+                                $userLiked = $checkLike->fetchColumn();
 
-                                <button id="dislikeButton" onclick="dislikeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
-                                    <?php echo $dislikes[0]['COUNT(*)']; ?>
-                                </button>
-                            <?php } else {
-                                echo "Log-in to like this video!";
-                            } ?>
+                                if ($userLiked === 0) {
+                                    // is al geliked
+                                    $likeStatus = "liked";
+                            ?>
+                                    <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_like')">
+                                        <?php echo $likes[0]['COUNT(*)']; ?>
+                                    </button>
+
+                                    <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_like_add_dislike')">
+                                        <?php echo $dislikes[0]['COUNT(*)']; ?>
+                                    </button>
+                                <?php
+                                } elseif ($userLiked == 1) {
+                                    // is al gedisliked
+                                ?>
+                                    <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_dislike_add_like')">
+                                        <?php echo $likes[0]['COUNT(*)']; ?>
+                                    </button>
+
+                                    <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_dislike')">
+                                        <?php echo $dislikes[0]['COUNT(*)']; ?>
+                                    </button>
+                                <?php
+                                } else {
+                                    // is nog niet geliked of gedisliked
+                                ?>
+                                    <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'add_like')">
+                                        <?php echo $likes[0]['COUNT(*)']; ?>
+                                    </button>
+
+                                    <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'add_dislike')">
+                                        <?php echo $dislikes[0]['COUNT(*)']; ?>
+                                    </button>
+                            <?php
+                                }
+                            } else {
+                                echo "Log-in to like or dislike this video!";
+                            }
+                            ?>
 
                         </div>
                     </div>
@@ -111,13 +150,11 @@
     }
 
     ?>
-
-
     <script>
         var video = document.getElementById("myVideo");
         var hasWatched30Percent = false;
         var videoId = <?php echo $videoId; ?>;
-        var accountId = <?php echo $accounts[0]['id']; ?>;
+        var accountId = <?php echo $_SESSION['account_id']; ?>;
 
         function updateProgress() {
             // deze functie checked of je 30 procent van de video hebt gezien en add dan een view
@@ -135,20 +172,18 @@
             }
         }
 
-        function likeVideo(videoId, accountId) {
-            // redirect naar like.php
+        function likeVideo(videoId, accountId, likeStatus) {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "like.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send("videoId=" + videoId + "&accountId=" + accountId);
-        }
-
-        function dislikeVideo(videoId, accountId) {
-            // redirect naar dislike.php
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "dislike.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send("videoId=" + videoId + "&accountId=" + accountId);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // reload pagina
+                    location.reload();
+                }
+            };
+            // Redirect naar like.php
+            xhr.send("videoId=" + videoId + "&accountId=" + accountId + "&likeStatus=" + likeStatus);
         }
     </script>
 </body>
