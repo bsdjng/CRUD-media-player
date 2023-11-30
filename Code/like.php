@@ -6,8 +6,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $videoId = $_POST['videoId'];
     $accountId = $_POST['accountId'];
 
-    // Insert a new like record into the database
-    // (Make sure to handle database connections and queries securely)
     $sqlInsert = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 0)";
     $stmtInsert = $pdo->prepare($sqlInsert);
     $stmtInsert->bindParam(':accountId', $accountId, PDO::PARAM_INT);

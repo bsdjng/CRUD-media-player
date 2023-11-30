@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OurTube</title>
-    <link rel="stylesheet" href="Video.css">
     <link rel="stylesheet" href="Header.css">
+    <link rel="stylesheet" href="VideoStyle.css">
 </head>
 
 <body>
@@ -19,47 +19,76 @@
 
 
     if (isset($_GET['id'])) {
-        //get video variables from id
+        //haal video id uit de $_GET
         $videoId = $_GET['id'];
         $sqlVideos = "SELECT id, account_id, video_name, views, likes, dislikes, video_description, created_at FROM videos WHERE id = :videoId";
         $videos = $pdo->prepare($sqlVideos);
         $videos->bindParam(':videoId', $videoId, PDO::PARAM_INT);
         $videos->execute();
 
-        //set like and dislike variables
+        //count likes
         $sqlLikes = "SELECT COUNT(*) FROM likes WHERE video_id = " . $videoId . " AND dislike = 0";
         $likesResult = $pdo->query($sqlLikes);
         $likes = $likesResult->fetchAll(PDO::FETCH_ASSOC);
+
+        //count dislikes
         $sqlDislikes = "SELECT COUNT(*) FROM likes WHERE video_id = " . $videoId . " AND dislike = 1";
         $DislikesResult = $pdo->query($sqlDislikes);
         $dislikes = $DislikesResult->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($likes, $dislikes);
+
+        //search account that posted the video
         if ($videos->rowCount() > 0) {
             $video = $videos->fetch(PDO::FETCH_ASSOC);
             $sqlAccounts = "SELECT id, username, profile_picture FROM accounts WHERE id = " . $video['account_id'];
             $accountsResult = $pdo->query($sqlAccounts);
             $accounts = $accountsResult->fetchAll(PDO::FETCH_ASSOC);
-            var_dump($accounts[0]['id']);
     ?>
-            <video width="640" height="360" controls>
-                <source src="http://localhost/CRUD-media-player/Usercontent/<?php echo $accounts[0]['id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <?php
-            echo $video['video_name'] . "<br>";
+            <div class="centerdiv">
+                <div class="video-container">
+                    <video controls>
+                        <source src="http://localhost/CRUD-media-player/Usercontent/<?php echo $accounts[0]['id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="text-container">
+                    <div class="title">
+                        <?php
+                        echo $video['video_name'] . "<br>";
+                        ?>
+                    </div>
+                    <div class="creator">
+                        <div id="PFP_NAME">
+                            <?php
+                            $imageSrc = "data:image/png;base64," . base64_encode($accounts[0]['profile_picture']);
+                            echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';
 
-            echo $video['video_description'] . "<br>";
+                            echo '<p class="creator_name">' . $accounts[0]['username'] . '</p>';
+                            ?>
+                        </div>
+                        <div>
+                            <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
+                                <?php echo $likes[0]['COUNT(*)']; ?>
+                            </button>
 
-            echo $video['views'] . "<br>";
+                            <button id="dislikeButton" onclick="dislikeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
+                                <?php echo $dislikes[0]['COUNT(*)']; ?>
+                            </button>
 
-            ?>
-            <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
-                <?php echo $likes[0]['COUNT(*)']; ?>
-            </button>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <?php
+                        $datetime = new DateTime($video['created_at']);
+                        $formattedDate = $datetime->format("M d, Y");
 
-            <button id="dislikeButton" onclick="dislikeVideo(<?php echo $videoId; ?>, <?php echo $accounts[0]['id']; ?>)">
-                <?php echo $dislikes[0]['COUNT(*)']; ?>
-            </button>
+                        echo '<p class="views_date">' . $video['views'] . " views - " . $formattedDate . "<br>" . '</p>';
+
+                        echo $video['video_description'];
+                        ?>
+                    </div>
+                </div>
+            </div>
+
     <?php
         } else {
 
