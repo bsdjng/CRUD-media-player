@@ -1,6 +1,6 @@
 <?php
 // zoek alle comments die bij de video horen
-$sqlComments = "SELECT id, account_id, comment_text, created_at FROM comments WHERE video_id = :videoId";
+$sqlComments = "SELECT id, account_id, comment_text, created_at FROM comments WHERE video_id = :videoId ORDER BY created_at DESC";
 $stmtComments = $pdo->prepare($sqlComments);
 $stmtComments->bindParam(':videoId', $videoId, PDO::PARAM_INT);
 $stmtComments->execute();
@@ -35,14 +35,14 @@ foreach ($comments as $comment) {
             </div>
             <div class="commentDetails">
                 <div class="commentUserame">
-                    <?php echo $commentUser[0]['username']; ?>
+                    <?php echo '@' . $commentUser[0]['username']; ?>
                 </div>
                 <div class="commentText">
                     <?php echo $comment['comment_text']; ?>
                 </div>
                 <div class="commentDate">
                     <?php
-                    $createdDateTime = new DateTime($video['created_at']);
+                    $createdDateTime = new DateTime($comment['created_at']);
                     $currentDateTime = new DateTime();
                     $timeDifference = $currentDateTime->diff($createdDateTime);
                     if ($timeDifference->days > 0) {

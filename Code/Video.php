@@ -162,13 +162,14 @@
             var duration = video.duration;
 
             var percentageWatched = (currentTime / duration) * 100;
+            console.log(percentageWatched);
 
             if (percentageWatched >= 30 && !hasWatched30Percent) {
                 hasWatched30Percent = true;
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "addView.php", true);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.send("videoId=" + videoId + "&accountId=" + accountId);
+                xhr.send("videoId=" + videoId);
             }
         }
 

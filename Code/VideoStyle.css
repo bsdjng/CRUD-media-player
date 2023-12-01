@@ -1,5 +1,6 @@
 body{
     background-color: #22303C; 
+    color:white;
 }
 .centerdiv{
     display: flex;
@@ -70,6 +71,7 @@ video{
 
 .description{
     background-color: grey;
+    color:black;
 }
 
 .views_date{
