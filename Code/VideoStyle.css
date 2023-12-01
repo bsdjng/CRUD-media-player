@@ -16,7 +16,7 @@ body{
 
 video{
     background-color: rgb(29, 29, 32);
-    object-fit: scale-down;
+    object-fit: contain;
     width: 1280px;
     height: 720px;
 }
