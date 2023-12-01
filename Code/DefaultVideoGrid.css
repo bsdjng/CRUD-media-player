@@ -1,62 +1,128 @@
-body{
-    background-color: cadetblue;
+/* body{
+    background-color: #22303C;
+    color: ghostwhite;
 }
 .MediaGrid{
-    margin: 20px;
+    margin: 1%;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 1svh;
-    list-style: none;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 0.5fr));
+    grid-gap: 0.1%;
 }
+
 .GridItem{
-    list-style: none;
-}
-.View_Time{
-    list-style: none;
+    width: 290px;
+    height: 250px;
+    flex-grow: 1;
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    flex-direction: column;
 }
-.thumbnail {
-    height: 200px;
+.ItemThumbnail{
     width: 100%;
+    height: 60%;
+    border-radius: 10px;
+    border: solid black 1px;
+    background-color: black;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.ProfilePicture{
+    height: 50%;
+    width: 20%;
     background-position: center;
     background-size: cover;
-    border: solid black 2px;
-    border-radius: 30px;
-    background-color: gray;
+    border-radius: 100%;
 }
-
-.VidName{
-    font-size: 25px;
-    
-}
-.PFP_Name{
+.Itemlayout{
     display: flex;
     flex-direction: row;
+    height: 40%;
+    padding-top: 10px;
 }
-.PFP{
-    height: 40px;
-    width: 40px;
+.ItemInfoLayout{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.Vid_Name {
+    font-size: 22px;
+}
+.creator_name, .Item_view_time {
+    font-size: 15px;
+} */
+body {
+    background-color: #22303C;
+    color: ghostwhite;
+}
+
+.MediaGrid {
+    margin: 1%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    grid-gap: 0.5%;
+}
+
+.GridItem {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ItemThumbnail {
+    width: 100%;
+    position: relative;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #354a5d;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.ItemThumbnail::before {
+    content: "";
+    display: block;
+    padding-bottom: 60%; /* Aspect ratio: 290px * 0.6 = 174px */
+}
+
+.ItemThumbnail img {
+    width: 100%;
+    height: 100%;
+}
+
+.ProfilePicture {
+    height: 50%;
+    width: 20%;
     background-position: center;
     background-size: cover;
-    border-radius: 50%;
+    border-radius: 100%;
 }
 
-.Vid_Name{
-    font-size: 25px;
+.Itemlayout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40%;
+    padding-top: 10px;
+}
+
+.ItemInfoLayout {
     margin-left: 10px;
-    align-self: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
 }
 
-.creator_name{
-    font-size: 20px;
-    align-self: center;   
+.Vid_Name {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
 }
 
-
-@media only screen and (max-width: 600px)  {
-    .MediaGrid{
-        grid-template-columns: repeat(1, 1fr);
-    }
+.creator_name, .Item_view_time {
+    font-size: 0.9rem;
 }

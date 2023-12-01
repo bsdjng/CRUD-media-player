@@ -1,7 +1,7 @@
 <?php
-session_start();
-var_dump($_SESSION);
-?>
+// session_start();
+// var_dump($_SESSION);
+// ?>
 
 <ol class="Header">
     <li class="HeaderItem"><a id="HeaderHomeLink" href="main.php"></a></li>

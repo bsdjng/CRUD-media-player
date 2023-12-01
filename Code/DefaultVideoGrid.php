@@ -14,8 +14,7 @@
         while ($video = $videos->fetch()) {
             if (isset($video)) {
     ?>
-    <ol class="GridItem" onclick="redirectToVideo(<?php echo $video['id']; ?>)">
-        <?php
+    <?php
             // blob decoderen
             $thumbnail_img = "data:image/png;base64," . base64_encode($video['thumbnail_image']);
             foreach ($accounts as $account) {
@@ -28,53 +27,48 @@
                 }
             }
         ?>
-        <li class="thumbnail" style="background-image:url('<?php echo $thumbnail_img; ?>') ;"></li>
-        <li>
-            <div class="PFP_Name"><?php
-                echo '<div class="PFP" style="background-image: url(\'' . $account_img . '\');"></div>';
-                echo '<p class="Vid_Name">' . $video['video_name'] . '</p>';?>
-            </div>
-        </li>
-        <li>
+    <div class="GridItem" onclick="redirectToVideo(<?php echo $video['id']; ?>)">
+        <div class="ItemThumbnail" style="background-image:url('<?php echo $thumbnail_img; ?>');"></div>
+        <div class="Itemlayout"><?php
+            echo '<div class="ProfilePicture" style="background-image: url(\'' . $account_img . '\');"></div>';?>
+            <div class="ItemInfoLayout">
             <?php
-                echo '<p class="creator_name">' . $account['username'] . '</p>';
-            ?>
-        </li>
-        <li>
-            <ol class="View_Time">
-                <li>
-                    <?php
-                    echo "views: " . $video['views'];
-                    ?>
-                </li>
-                <li>
-                    <?php
-                    $createdDateTime = new DateTime($video['created_at']);
-                    // huidige tijd
-                    $currentDateTime = new DateTime();
-                    // Tijdverschil berekenen
-                    $timeDifference = $currentDateTime->diff($createdDateTime);
-                    // Display the time difference
-                    if ($timeDifference->days > 0) {
-                        if ($timeDifference->days == 1) {
-                            echo $timeDifference->days . ' day ago';
-                        } else {
-                            echo $timeDifference->days . ' days ago';
-                        }
-                    } elseif ($timeDifference->h > 0) {
-                        if ($timeDifference->h == 1) {
-                            echo $timeDifference->h . ' hours ago';
-                        } else {
-                            echo $timeDifference->h . ' hours ago';
-                        }
-                    } else {
-                        echo $timeDifference->i . ' minutes ago';
+                echo '<div class="Vid_Name">' . $video['video_name'] . '</div>';
+                echo '<div class="creator_name">' . $account['username'] . '</div>';
+
+                // Calculate and display the time difference
+                $createdDateTime = new DateTime($video['created_at']);
+                $currentDateTime = new DateTime();
+                $timeDifference = $currentDateTime->diff($createdDateTime);
+
+                echo '<p class="Item_view_time">';
+                echo $video['views'] . ' views ' . ' • ';
+
+                if ($timeDifference->days > 0) {
+                    echo $timeDifference->days . ' day';
+                    if ($timeDifference->days > 1) {
+                        echo 's';
                     }
-                    ?>
-                </li>
-            </ol>
-        </li>
-    </ol>
+                    echo ' ago';
+                } elseif ($timeDifference->h > 0) {
+                    echo $timeDifference->h . ' hour';
+                    if ($timeDifference->h > 1) {
+                        echo 's';
+                    }
+                    echo ' ago';
+                } else {
+                    echo $timeDifference->i . ' minute';
+                    if ($timeDifference->i > 1) {
+                        echo 's';
+                    }
+                    echo ' ago';
+                }
+
+                echo '</p>';
+                ?>
+            </div>
+        </div>
+    </div>
     <?php
 
             } else {
