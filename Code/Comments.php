@@ -41,7 +41,30 @@ foreach ($comments as $comment) {
                     <?php echo $comment['comment_text']; ?>
                 </div>
                 <div class="commentDate">
-                    <?php echo $comment['created_at']; ?>
+                    <?php
+                    $createdDateTime = new DateTime($video['created_at']);
+                    $currentDateTime = new DateTime();
+                    $timeDifference = $currentDateTime->diff($createdDateTime);
+                    if ($timeDifference->days > 0) {
+                        echo $timeDifference->days . ' day';
+                        if ($timeDifference->days > 1) {
+                            echo 's';
+                        }
+                        echo ' ago';
+                    } elseif ($timeDifference->h > 0) {
+                        echo $timeDifference->h . ' hour';
+                        if ($timeDifference->h > 1) {
+                            echo 's';
+                        }
+                        echo ' ago';
+                    } else {
+                        echo $timeDifference->i . ' minute';
+                        if ($timeDifference->i > 1) {
+                            echo 's';
+                        }
+                        echo ' ago';
+                    }
+                    ?>
                 </div>
             </div>
         </div>

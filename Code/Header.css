@@ -36,6 +36,12 @@
     background-size: cover;
 }
 
+#ChangedHeaderUserLink{
+    background-position: center;
+    background-size:cover;
+    border-radius: 25%;
+}
+
 #SearchBar{
     background-color: transparent;
     border: solid black 3px;
