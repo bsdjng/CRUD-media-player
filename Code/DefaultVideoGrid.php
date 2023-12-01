@@ -22,7 +22,6 @@
                         $account_img = "data:image/png;base64," . base64_encode($account['profile_picture']);
                         $creatorName = $account['username'];
                         // laat alle variabelen zien
-                        // echo $account['username'];
                     }
                 }
     ?>

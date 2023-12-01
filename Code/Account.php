@@ -1,2 +1,102 @@
 <?php
-echo "hier komt account pagina";
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OurTube</title>
+    <link rel="stylesheet" href="Main.css">
+    <link rel="stylesheet" href="Header.css">
+    <link rel="stylesheet" href="DefaultVideoGrid.css">
+</head>
+
+<body>
+    <?php
+    require 'Header.php';
+    require 'Connection.php';
+
+    // pak informatie van het ingelogde account
+    $sqlCurrentAccount = "SELECT id, username, created_at, profile_picture FROM accounts WHERE id = :account_id";
+    $stmtCurrentAccount = $pdo->prepare($sqlCurrentAccount);
+    $stmtCurrentAccount->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+    $stmtCurrentAccount->execute();
+    $currentAccount = $stmtCurrentAccount->fetch(PDO::FETCH_ASSOC);
+
+    // pak alle videos van de ingelogde user
+    $sqlUserVideos = "SELECT id, video_name, views, thumbnail_image, created_at FROM videos WHERE account_id = :account_id";
+    $stmtUserVideos = $pdo->prepare($sqlUserVideos);
+    $stmtUserVideos->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+    $stmtUserVideos->execute();
+    $userVideos = $stmtUserVideos->fetchAll(PDO::FETCH_ASSOC);
+
+    if (count($userVideos) > 0) {
+    ?><div class="MediaGrid">
+            <?php
+            foreach ($userVideos as $userVideo) {
+                $thumbnail_img = "data:image/png;base64," . base64_encode($userVideo['thumbnail_image']);
+                $account_img = "data:image/png;base64," . base64_encode($currentAccount['profile_picture']);
+            ?>
+                <div class="GridItem" onclick="redirectToVideo(<?php echo $userVideo['id']; ?>)">
+
+                    <div class="ItemThumbnail" style="background-image:url('<?php echo $thumbnail_img; ?>');"></div>
+                    <div class="Itemlayout"><?php
+                                            echo '<div class="ProfilePicture" style="background-image: url(\'' . $account_img . '\');"></div>'; ?>
+                        <div class="ItemInfoLayout">
+                            <?php
+                            echo '<div class="Vid_Name">' . $userVideo['video_name'] . '</div>';
+                            echo '<div class="creator_name">' . $currentAccount['username'] . '</div>';
+
+                            // Calculate and display the time difference
+                            $createdDateTime = new DateTime($userVideo['created_at']);
+                            $currentDateTime = new DateTime();
+                            $timeDifference = $currentDateTime->diff($createdDateTime);
+
+                            echo '<p class="Item_view_time">';
+                            echo $userVideo['views'] . ' views ' . ' • ';
+
+                            if ($timeDifference->days > 0) {
+                                echo $timeDifference->days . ' day';
+                                if ($timeDifference->days > 1) {
+                                    echo 's';
+                                }
+                                echo ' ago';
+                            } elseif ($timeDifference->h > 0) {
+                                echo $timeDifference->h . ' hour';
+                                if ($timeDifference->h > 1) {
+                                    echo 's';
+                                }
+                                echo ' ago';
+                            } else {
+                                echo $timeDifference->i . ' minute';
+                                if ($timeDifference->i > 1) {
+                                    echo 's';
+                                }
+                                echo ' ago';
+                            }
+
+                            echo '</p>';
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            } ?>
+        </div>
+    <?php
+    } else {
+        echo "You have not posted a video yet...";
+    }
+    ?>
+    <script>
+        function redirectToVideo(videoId) {
+            window.location.href = "Video.php?id=" + videoId;
+        }
+    </script>
+</body>
+
+</html>
