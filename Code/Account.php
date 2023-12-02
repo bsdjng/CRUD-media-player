@@ -21,21 +21,59 @@ if (session_status() === PHP_SESSION_NONE) {
     require 'Connection.php';
 
     // pak informatie van het ingelogde account
-    $sqlCurrentAccount = "SELECT id, username, created_at, profile_picture FROM accounts WHERE id = :account_id";
+    $sqlCurrentAccount = "SELECT id, username, created_at, profile_picture, banner, about_me FROM accounts WHERE id = :account_id";
     $stmtCurrentAccount = $pdo->prepare($sqlCurrentAccount);
-    $stmtCurrentAccount->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+    $stmtCurrentAccount->bindParam(':account_id', $_GET['id'], PDO::PARAM_INT);
     $stmtCurrentAccount->execute();
     $currentAccount = $stmtCurrentAccount->fetch(PDO::FETCH_ASSOC);
 
     // pak alle videos van de ingelogde user
-    $sqlUserVideos = "SELECT id, video_name, views, thumbnail_image, created_at FROM videos WHERE account_id = :account_id";
+    $sqlUserVideos = "SELECT id, video_name, views, thumbnail_image, created_at FROM videos WHERE account_id = :account_id ORDER BY created_at DESC";
     $stmtUserVideos = $pdo->prepare($sqlUserVideos);
-    $stmtUserVideos->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+    $stmtUserVideos->bindParam(':account_id', $_GET['id'], PDO::PARAM_INT);
     $stmtUserVideos->execute();
     $userVideos = $stmtUserVideos->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($currentAccount['banner'])) {
+        $defaultBannerPath = "../images/defaultBanner.png";
+        $banner = "data:image/png;base64," . base64_encode(file_get_contents($defaultBannerPath));
+    } else {
+        $banner = "data:image/png;base64," . base64_encode($currentAccount['banner']);
+    }
 
+    ?>
+    <div class="AccountInformation">
+        <img class="Banner" src="<?php echo $banner; ?>" alt="Banner"></img>
+        <div class="Creator">
+            <?php
+            $pfp = "data:image/png;base64," . base64_encode($currentAccount['profile_picture']);
+            echo '<img class="CurrentAccountPFP" src="' . $pfp . '"></img>';
+            ?>
+            <div class="CurrentCreatorInfo">
+                <div class="CurrentCreatorName">
+                    <?php
+                    echo $currentAccount['username'];
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo count($userVideos) . " videos";
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    if (empty($currentAccount['about_me'])) {
+                        echo "This channel does not have a description yet.";
+                    } else {
+                        echo $currentAccount['about_me'];
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
     if (count($userVideos) > 0) {
-    ?><div class="MediaGrid">
+    ?><div class=" MediaGrid">
             <?php
             foreach ($userVideos as $userVideo) {
                 $thumbnail_img = "data:image/png;base64," . base64_encode($userVideo['thumbnail_image']);

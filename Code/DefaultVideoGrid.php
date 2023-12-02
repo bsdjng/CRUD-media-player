@@ -20,6 +20,7 @@
                     if ($account['id'] == $video['account_id']) {
                         // blob decoderen
                         $account_img = "data:image/png;base64," . base64_encode($account['profile_picture']);
+                        $account_id = $account['id'];
                         $creatorName = $account['username'];
                         // laat alle variabelen zien
                     }
@@ -27,11 +28,13 @@
     ?>
                 <div class="GridItem" onclick="redirectToVideo(<?php echo $video['id']; ?>)">
                     <div class="ItemThumbnail" style="background-image:url('<?php echo $thumbnail_img; ?>');"></div>
-                    <div class="Itemlayout"><?php
-                                            echo '<div class="ProfilePicture" style="background-image: url(\'' . $account_img . '\');"></div>'; ?>
+                    <div class="Itemlayout">
+                        <?php
+                        echo '<div class="ProfilePicture" onclick="redirectToChannel(' . $account_id . ')" style="background-image: url(\'' . $account_img . '\');"></div>';
+                        ?>
                         <div class="ItemInfoLayout">
                             <?php
-                            echo '<div class="Vid_Name">' . $video['video_name'] . '</div>';
+                            echo '<div class="Vid_Name" >' . $video['video_name'] . '</div>';
                             echo '<div class="creator_name">' . $creatorName . '</div>';
 
                             // Calculate and display the time difference
@@ -81,5 +84,10 @@
 <script>
     function redirectToVideo(videoId) {
         window.location.href = "Video.php?id=" + videoId;
+    }
+
+    function redirectToChannel(accountId) {
+        event.stopPropagation();
+        window.location.href = "Account.php?id=" + accountId;
     }
 </script>
