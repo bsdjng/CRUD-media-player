@@ -69,7 +69,7 @@
                             echo '<p class="creator_name">' . $accounts[0]['username'] . '</p>';
                             ?>
                         </div>
-                        <div>
+                        <div class="Like_dislike_btn">
                             <?php
                             if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                                 // Query om te kijken of het geliked of gedisliked is

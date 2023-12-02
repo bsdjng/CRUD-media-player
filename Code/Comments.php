@@ -10,9 +10,12 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
 ?>
     <div id="commentsection">
         <form action="CommentsProcessing.php" method="post" id="commentSubmitForm">
-            <input type="text" placeholder="Share your comment!" name="newCommentText" autocomplete="off" required><br>
+            <img id="InputFormAccountIMG" src="../images/user.png" alt="profile img">
             <input type="hidden" value="<?php echo $video['id']; ?>" name="videoId">
-            <input type="submit" value="Submit" id="commentSubmitButton">
+            <div id="TextInput_SubmitBtn">
+                <input type="text" placeholder="Share your comment!" name="newCommentText" id="newCommentText" autocomplete="off" required>
+                <input type="submit" value="Submit" id="commentSubmitButton">
+            </div>
         </form>
     </div>
 <?php
