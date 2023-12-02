@@ -33,7 +33,6 @@ video {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 17%;
     margin-right: 1%;
 }
 #likeButton,
@@ -47,6 +46,7 @@ video {
     justify-content: space-between;
     align-items: center;
     text-align: justify;
+    margin: 10px;
 }
 
 #likeButton {
