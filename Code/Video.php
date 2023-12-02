@@ -61,7 +61,7 @@
                         ?>
                     </div>
                     <div class="creator">
-                        <div id="PFP_NAME">
+                        <div id="PFP_NAME" onclick="redirectToChannel('<?php echo $accounts[0]['id']; ?>')">
                             <?php
                             $imageSrc = "data:image/png;base64," . base64_encode($accounts[0]['profile_picture']);
                             echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';
@@ -185,6 +185,11 @@
             };
             // Redirect naar like.php
             xhr.send("videoId=" + videoId + "&accountId=" + accountId + "&likeStatus=" + likeStatus);
+        }
+
+        function redirectToChannel(accountId) {
+            event.stopPropagation();
+            window.location.href = "Account.php?id=" + accountId;
         }
     </script>
 </body>

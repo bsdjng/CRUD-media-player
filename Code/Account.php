@@ -20,17 +20,23 @@ if (session_status() === PHP_SESSION_NONE) {
     require 'Header.php';
     require 'Connection.php';
 
+    if (isset($_GET['id'])) {
+        $idParam = $_GET['id'];
+    } else {
+        $idParam = $_SESSION['account_id'];
+    }
+
     // pak informatie van het ingelogde account
     $sqlCurrentAccount = "SELECT id, username, created_at, profile_picture, banner, about_me FROM accounts WHERE id = :account_id";
     $stmtCurrentAccount = $pdo->prepare($sqlCurrentAccount);
-    $stmtCurrentAccount->bindParam(':account_id', $_GET['id'], PDO::PARAM_INT);
+    $stmtCurrentAccount->bindParam(':account_id', $idParam, PDO::PARAM_INT);
     $stmtCurrentAccount->execute();
     $currentAccount = $stmtCurrentAccount->fetch(PDO::FETCH_ASSOC);
 
     // pak alle videos van de ingelogde user
     $sqlUserVideos = "SELECT id, video_name, views, thumbnail_image, created_at FROM videos WHERE account_id = :account_id ORDER BY created_at DESC";
     $stmtUserVideos = $pdo->prepare($sqlUserVideos);
-    $stmtUserVideos->bindParam(':account_id', $_GET['id'], PDO::PARAM_INT);
+    $stmtUserVideos->bindParam(':account_id', $idParam, PDO::PARAM_INT);
     $stmtUserVideos->execute();
     $userVideos = $stmtUserVideos->fetchAll(PDO::FETCH_ASSOC);
     if (empty($currentAccount['banner'])) {
