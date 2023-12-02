@@ -10,7 +10,11 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
 ?>
     <div id="commentsection">
         <form action="CommentsProcessing.php" method="post" id="commentSubmitForm">
-            <img id="InputFormAccountIMG" src="../images/user.png" alt="profile img">
+            <?php
+            $InputFormPFPsrc = "data:image/png;base64," . base64_encode($loggedInAccount['profile_picture']);
+            // var_dump($InputFormPFPsrc);
+            ?>
+            <img id="InputFormAccountIMG" src="<?php echo $InputFormPFPsrc; ?>" alt="profile img">
             <input type="hidden" value="<?php echo $video['id']; ?>" name="videoId">
             <div id="TextInput_SubmitBtn">
                 <input type="text" placeholder="Share your comment!" name="newCommentText" id="newCommentText" autocomplete="off" required>
