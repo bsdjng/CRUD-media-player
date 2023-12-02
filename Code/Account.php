@@ -74,6 +74,13 @@ if (session_status() === PHP_SESSION_NONE) {
                     }
                     ?>
                 </div>
+                <div>
+                    <?php
+                    $joinDate = new DateTime($currentAccount['created_at']);
+                    $formattedJoinDate = $joinDate->format("M d, Y");
+                    echo $currentAccount['username'] . ' has been a communist since: ' . $formattedJoinDate['created_at'];
+                    ?>
+                </div>
             </div>
         </div>
     </div>

@@ -36,6 +36,10 @@
     margin-bottom: 20px;
 }
 
+.commentPFP{
+    cursor:pointer;
+}
+
 .commentPFPimg {
     height: 40px;
     width: 40px;

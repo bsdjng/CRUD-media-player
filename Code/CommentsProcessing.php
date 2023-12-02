@@ -22,3 +22,4 @@ $stmtAddComment->bindParam(':created_at', $date_Now, PDO::PARAM_STR);
 $stmtAddComment->execute();
 
 header('Location: Video.php?id=' . $videoId);
+exit();

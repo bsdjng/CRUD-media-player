@@ -23,6 +23,7 @@ if (!empty($username) && !empty($email) && !empty($password) && !empty($repeat_p
         $stmt->execute([$username, $email, $hashed_password, $date_Now]);
 
         header('Location: Main.php');
+        exit();
     }
 } else {
     echo "All fields are required.";
