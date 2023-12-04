@@ -1,6 +1,6 @@
 <div class="MediaGrid">
     <?php
-    $sqlVideos = "SELECT id, account_id, video_name, views, likes, dislikes, thumbnail_image, created_at FROM videos";
+    $sqlVideos = "SELECT id, account_id, video_name, views, likes, dislikes, thumbnail_image, created_at FROM videos ORDER BY created_at DESC";
     $videos = $pdo->query($sqlVideos);
 
     $sqlAccounts = "SELECT username, id, profile_picture FROM accounts";

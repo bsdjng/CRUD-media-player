@@ -197,7 +197,7 @@ if (session_status() === PHP_SESSION_NONE) {
             console.log('jo');
         }
 
-        function redirectToChannel(accountId, event) {
+        function redirectToChannel(accountId) {
             console.log('crazy');
             event.stopPropagation();
             window.location.href = "Account.php?id=" + accountId;
