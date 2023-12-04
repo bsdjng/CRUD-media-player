@@ -13,31 +13,34 @@ $accountsResult->execute();
 $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
 ?>
 <ol class="Header">
-        <li class="HeaderItem"><a id="HeaderHomeLink" href="main.php"></a></li>
-        <li id="SearchBar">
-            <form action="main.php" method="post">
-                <input id="SearchBarText" name="search" type="text" placeholder="Search">
-                <input id="SearchBarsubmit" type="submit" value="">
-            </form>
+    <li class="HeaderItem"><a id="HeaderHomeLink" href="main.php"></a></li>
+    <li id="SearchBar">
+        <form action="main.php" method="post">
+            <input id="SearchBarText" name="search" type="text" placeholder="Search">
+            <input id="SearchBarsubmit" type="submit" value="">
+        </form>
+    </li>
+    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) : ?>
+        <?php
+        $imageSrc = "data:image/png;base64," . base64_encode($loggedInAccount['profile_picture']);
+        ?>
+        <li class="HeaderItem" id="ProfileDropdown" style="background-image: url('<?php echo $imageSrc; ?>')">
+            <div class="Dropdown_menu">
+                <a class="Dropdown_link" href="Account.php">
+                    <p>go to your account</p>
+                </a>
+                <a class="Dropdown_link" href="VideoCreator.php">
+                    <p>Create a new video</p>
+                </a>
+                <a class="Dropdown_link" href="Logout.php">
+                    <p>LogOut</p>
+                </a>
+                <!-- ALS ER NIEUWE LINK MOET ZIEN VOEG DIE HIER TOE -->
+            </div>
         </li>
-        <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) : ?>
-            <?php
-            $imageSrc = "data:image/png;base64," . base64_encode($loggedInAccount['profile_picture']);
-            ?>
-            <li class="HeaderItem" id="ProfileDropdown" style="background-image: url('<?php echo $imageSrc; ?>')">
-                <div class="Dropdown_menu">
-                    <a class="Dropdown_link" href="Account.php"><p>go to your account</p></a>
-                    <a class="Dropdown_link" href="VideoCreator.php"><p>Create a new video</p></a>
-                    <a class="Dropdown_link" href="Logout.php"><p>LogOut</p></a>
-                    <!-- ALS ER NIEUWE LINK MOET ZIEN VOEG DIE HIER TOE -->
-                </div>
-            </li>
-        <?php else : ?>
-            <li class="HeaderItem">
-                <a id="HeaderUserLink" href="AccountLogin.php">log in</a>
-            </li>
-        <?php endif; ?>
-    </ol>
-
-
-    
+    <?php else : ?>
+        <li class="HeaderItem">
+            <a id="HeaderUserLink" href="AccountLogin.php">log in</a>
+        </li>
+    <?php endif; ?>
+</ol>

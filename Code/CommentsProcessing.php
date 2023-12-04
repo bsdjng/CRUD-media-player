@@ -10,6 +10,7 @@ var_dump($_SESSION);
 $videoId = $_POST['videoId'];
 $commenterID = $_SESSION['account_id'];
 $commentText = $_POST['newCommentText'];
+$commentText = htmlspecialchars($commentText, ENT_QUOTES, 'UTF-8');
 $date_Now = (new DateTime())->format('Y-m-d H:i:s');
 
 $sqlAddComment = "INSERT INTO comments (video_id, account_id, comment_text, created_at) VALUES (:video_id, :account_id, :comment_text, :created_at)";

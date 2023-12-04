@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,8 +19,8 @@
 
 
 <body>
+
     <?php
-    session_start();
     require("Header.php");
     require("Connection.php");
     require("Search.php");
@@ -50,7 +56,7 @@
             <div class="centerdiv">
                 <div class="video-container">
                     <video id="myVideo" controls ontimeupdate="updateProgress()">
-                        <source src="http://localhost/CRUD-media-player/Usercontent/<?php echo $accounts[0]['id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
+                        <source src="http://192.168.91.244/CRUD-media-player/Usercontent/<?php echo $accounts[0]['id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -61,7 +67,7 @@
                         ?>
                     </div>
                     <div class="creator">
-                        <div id="PFP_NAME" onclick="redirectToChannel('<?php echo $accounts[0]['id']; ?>')">
+                        <div id="PFP_NAME" onclick="redirectToChannel('<?php echo $accounts[0]['id']; ?>',)">
                             <?php
                             $imageSrc = "data:image/png;base64," . base64_encode($accounts[0]['profile_picture']);
                             echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';
@@ -187,7 +193,12 @@
             xhr.send("videoId=" + videoId + "&accountId=" + accountId + "&likeStatus=" + likeStatus);
         }
 
-        function redirectToChannel(accountId) {
+        function jo($msg) {
+            console.log('jo');
+        }
+
+        function redirectToChannel(accountId, event) {
+            console.log('crazy');
             event.stopPropagation();
             window.location.href = "Account.php?id=" + accountId;
         }
