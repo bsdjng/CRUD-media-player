@@ -12,7 +12,6 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         <form action="CommentsProcessing.php" method="post" id="commentSubmitForm">
             <?php
             $InputFormPFPsrc = "data:image/png;base64," . base64_encode($loggedInAccount['profile_picture']);
-            // var_dump($InputFormPFPsrc);
             ?>
             <img id="InputFormAccountIMG" src="<?php echo $InputFormPFPsrc; ?>" alt="profile img">
             <input type="hidden" value="<?php echo $video['id']; ?>" name="videoId">
