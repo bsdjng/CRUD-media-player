@@ -9,7 +9,7 @@ include 'Header.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OurTube</title>
     <link rel="stylesheet" href="Header.css">
-    <link rel="stylesheet" href="AccountLogin.css">
+    <link rel="stylesheet" href="VideoCreator.css">
 </head>
 
 <body>
@@ -20,10 +20,10 @@ include 'Header.php';
         </div>
         <div id="div2">
             <form action="VideoProcessing.php" method="post" id="videoSubmitForm" enctype="multipart/form-data">
-                <input type="text" name="videoName" id="email" required><br>
-                <input type="file" name="video" id="email" accept="video/*" required><br>
-                <input type="file" name="videoThumbnail" id="email" accept="image/*" required><br>
-                <input type="text" name="videoDescription" id="email" required><br>
+                <input type="text" placeholder="Video Title" name="videoName" id="videoName" required><br>
+                <input type="file" name="video" id="video" accept="video/*" required>please insert video<br>
+                <input type="file" name="videoThumbnail" id="videoThumbnail" accept="image/*" required>please insert thumbnail<br>
+                <input type="text" placeholder="Video description" name="videoDescription" id="videoDescription" required><br>
                 <input type="hidden" name="MAX_FILE_SIZE" value="41943040">
             </form>
             <div id="div3">
