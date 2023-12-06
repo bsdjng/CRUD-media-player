@@ -29,6 +29,9 @@ $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
                 <a class="Dropdown_link" href="Account.php">
                     <p>go to your account</p>
                 </a>
+                <a class="Dropdown_link" href="AccountSettings.php">
+                    <p>Change account settings</p>
+                </a>
                 <a class="Dropdown_link" href="VideoCreator.php">
                     <p>Create a new video</p>
                 </a>

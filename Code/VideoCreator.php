@@ -16,7 +16,6 @@ include 'Header.php';
     <div class="CenterDiv">
         <div id="div1">
             <h1>Submit your video here!</h1>
-            <!-- <h2>please log into a account</h2> -->
         </div>
         <div id="div2">
             <form action="VideoProcessing.php" method="post" id="videoSubmitForm" enctype="multipart/form-data">
@@ -37,13 +36,13 @@ include 'Header.php';
             var videoFile = document.querySelector('input[name="video"]').files[0];
             var videoThumbnailFile = document.querySelector('input[name="videoThumbnail"]').files[0];
 
-            // Check the size of the video file
-            if (videoFile && videoFile.size > 40000000) { // Adjust the size limit as needed
+            // Check grootte van de video file
+            if (videoFile && videoFile.size > 40000000) {
                 alert('Video file size exceeds the limit (40 MB). Please choose a smaller file.');
-                event.preventDefault(); // Prevent the form from being submitted
+                event.preventDefault(); // Form word niet gesubmit
             }
 
-            // Check the size of the video thumbnail file
+            // Check grootte van de thumbnail file
             if (videoThumbnailFile && videoThumbnailFile.size > 10000000) {
                 alert('Video thumbnail file size exceeds the limit (10 MB). Please choose a smaller file.');
                 event.preventDefault();

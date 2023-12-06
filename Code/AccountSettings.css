@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: cadetblue;
+}
+
+#CenterDiv {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 70%;
+    position: absolute;
+    background-color: ghostwhite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: solid black;
+    background-color: blueviolet;
+    border-radius: 50px;
+}
+
+.accountInfo {
+    text-align: center;
+    padding: 20px;
+}
+
+.infoItem {
+    margin-bottom: 10px;
+}
+
+img {
+    max-width: 100%;
+}
