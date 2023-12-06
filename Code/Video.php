@@ -191,10 +191,6 @@ if (session_status() === PHP_SESSION_NONE) {
             xhr.send("videoId=" + videoId + "&accountId=" + accountId + "&likeStatus=" + likeStatus);
         }
 
-        function jo($msg) {
-            console.log('jo');
-        }
-
         function redirectToChannel(accountId) {
             console.log('crazy');
             event.stopPropagation();
