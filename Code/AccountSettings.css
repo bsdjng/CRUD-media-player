@@ -4,7 +4,7 @@ body {
     background-color: cadetblue;
 }
 
-#CenterDiv {
+.centerDiv {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -17,7 +17,6 @@ body {
     align-items: center;
     justify-content: center;
     border: solid black;
-    background-color: blueviolet;
     border-radius: 50px;
 }
 
