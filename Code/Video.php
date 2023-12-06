@@ -16,8 +16,6 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="Comments.css">
 </head>
 
-
-
 <body>
 
     <?php
@@ -26,37 +24,27 @@ if (session_status() === PHP_SESSION_NONE) {
     require("Search.php");
 
     if (isset($_GET['id'])) {
-        //haal video id uit de $_GET
+        // Get video id from $_GET
         $videoId = $_GET['id'];
-        $sqlVideos = "SELECT id, account_id, video_name, views, likes, dislikes, video_description, created_at FROM videos WHERE id = :videoId";
+
+        // Query to retrieve video information with account details
+        $sqlVideos = "SELECT v.id, v.account_id, v.video_name, v.views, v.likes, v.dislikes, v.video_description, v.created_at, a.username, a.profile_picture 
+                      FROM videos v 
+                      JOIN accounts a ON v.account_id = a.id 
+                      WHERE v.id = :videoId";
+
         $videos = $pdo->prepare($sqlVideos);
         $videos->bindParam(':videoId', $videoId, PDO::PARAM_INT);
         $videos->execute();
 
-        //tel likes
-        $sqlLikes = "SELECT COUNT(*) FROM likes WHERE video_id = " . $videoId . " AND dislike = 0";
-        $likesResult = $pdo->query($sqlLikes);
-        $likes = $likesResult->fetchAll(PDO::FETCH_ASSOC);
-
-        //tel dislikes
-        $sqlDislikes = "SELECT COUNT(*) FROM likes WHERE video_id = " . $videoId . " AND dislike = 1";
-        $DislikesResult = $pdo->query($sqlDislikes);
-        $dislikes = $DislikesResult->fetchAll(PDO::FETCH_ASSOC);
-
-        //zoek account die de video heeft geupload
         if ($videos->rowCount() > 0) {
-            $video = $videos->fetch(PDO::FETCH_ASSOC);
-            $sqlAccounts = "SELECT id, username, profile_picture FROM accounts WHERE id = " . $video['account_id'];
-            $accountsResult = $pdo->query($sqlAccounts);
-            $accounts = $accountsResult->fetchAll(PDO::FETCH_ASSOC);
-    ?>
-
-
-            <!-- display de video informatie -->
+            // Fetch video details
+            $video = $videos->fetch(PDO::FETCH_ASSOC); ?>
+            <!-- display the video information -->
             <div class="centerdiv">
                 <div class="video-container">
                     <video id="myVideo" controls ontimeupdate="updateProgress()">
-                        <source src="http://192.168.95.205/CRUD-media-player/Usercontent/<?php echo $accounts[0]['id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
+                        <source src="http://192.168.95.205/CRUD-media-player/Usercontent/<?php echo $video['account_id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -67,18 +55,17 @@ if (session_status() === PHP_SESSION_NONE) {
                         ?>
                     </div>
                     <div class="creator">
-                        <div id="PFP_NAME" onclick="redirectToChannel('<?php echo $accounts[0]['id']; ?>',)">
+                        <div id="PFP_NAME" onclick="redirectToChannel('<?php echo $video['account_id']; ?>')">
                             <?php
-                            $imageSrc = "data:image/png;base64," . base64_encode($accounts[0]['profile_picture']);
+                            $imageSrc = "data:image/png;base64," . base64_encode($video['profile_picture']);
                             echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';
-
-                            echo '<p class="creator_name">' . $accounts[0]['username'] . '</p>';
+                            echo '<p class="creator_name">' . $video['username'] . '</p>';
                             ?>
                         </div>
                         <div class="Like_dislike_btn">
                             <?php
                             if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-                                // Query om te kijken of het geliked of gedisliked is
+                                // Query to check if it's liked or disliked
                                 $sqlCheckLike = "SELECT dislike FROM likes WHERE video_id = :videoId AND account_id = :accountId";
                                 $checkLike = $pdo->prepare($sqlCheckLike);
                                 $checkLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
@@ -86,38 +73,50 @@ if (session_status() === PHP_SESSION_NONE) {
                                 $checkLike->execute();
                                 $userLiked = $checkLike->fetchColumn();
 
+                                $sqlLikeCount = "SELECT COUNT(*) FROM likes WHERE video_id = :videoId AND dislike = 0";
+                                $likeCountStmt = $pdo->prepare($sqlLikeCount);
+                                $likeCountStmt->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                                $likeCountStmt->execute();
+                                $likesCount = $likeCountStmt->fetchColumn();
+
+                                $sqlDislikeCount = "SELECT COUNT(*) FROM likes WHERE video_id = :videoId AND dislike = 1";
+                                $dislikeCountStmt = $pdo->prepare($sqlDislikeCount);
+                                $dislikeCountStmt->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                                $dislikeCountStmt->execute();
+                                $dislikesCount = $dislikeCountStmt->fetchColumn();
+
                                 if ($userLiked === 0) {
-                                    // is al geliked
+                                    // Already liked
                                     $likeStatus = "liked";
                             ?>
                                     <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_like')">
-                                        <?php echo $likes[0]['COUNT(*)']; ?>
+                                        <?php echo $likesCount; ?>
                                     </button>
 
                                     <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_like_add_dislike')">
-                                        <?php echo $dislikes[0]['COUNT(*)']; ?>
+                                        <?php echo $dislikesCount; ?>
                                     </button>
                                 <?php
                                 } elseif ($userLiked == 1) {
-                                    // is al gedisliked
+                                    // Already disliked
                                 ?>
                                     <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_dislike_add_like')">
-                                        <?php echo $likes[0]['COUNT(*)']; ?>
+                                        <?php echo $likesCount; ?>
                                     </button>
 
                                     <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_dislike')">
-                                        <?php echo $dislikes[0]['COUNT(*)']; ?>
+                                        <?php echo $dislikesCount; ?>
                                     </button>
                                 <?php
                                 } else {
-                                    // is nog niet geliked of gedisliked
+                                    // Not liked or disliked yet
                                 ?>
                                     <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'add_like')">
-                                        <?php echo $likes[0]['COUNT(*)']; ?>
+                                        <?php echo $likesCount; ?>
                                     </button>
 
                                     <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'add_dislike')">
-                                        <?php echo $dislikes[0]['COUNT(*)']; ?>
+                                        <?php echo $dislikesCount; ?>
                                     </button>
                             <?php
                                 }
@@ -125,7 +124,6 @@ if (session_status() === PHP_SESSION_NONE) {
                                 echo "Log-in to like or dislike this video!";
                             }
                             ?>
-
                         </div>
                     </div>
                     <div class="description">
@@ -148,13 +146,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <?php
         } else {
-
+            // Video not found
             echo "Video not found.";
         }
     } else {
+        // Video ID not provided
         echo "Video ID not provided.";
     }
-
     ?>
     <script>
         var video = document.getElementById("myVideo");
