@@ -20,7 +20,7 @@ include 'Header.php';
         </div>
         <div id="div2">
             <form action="VideoProcessing.php" method="post" id="videoSubmitForm" enctype="multipart/form-data">
-                <input type="text" placeholder="Video Title" name="videoName" id="videoName" required><br>
+                <input type="text" placeholder="Video Title" name="videoName" id="videoName" maxlength="55" required><br>
                 <input type="file" name="video" id="video" accept="video/*" required>please insert video<br>
                 <input type="file" name="videoThumbnail" id="videoThumbnail" accept="image/*" required>please insert thumbnail<br>
                 <input type="text" placeholder="Video description" name="videoDescription" id="videoDescription" required><br>
@@ -38,8 +38,8 @@ include 'Header.php';
             var videoThumbnailFile = document.querySelector('input[name="videoThumbnail"]').files[0];
 
             // Check the size of the video file
-            if (videoFile && videoFile.size > 100000000) { // Adjust the size limit as needed
-                alert('Video file size exceeds the limit (100 MB). Please choose a smaller file.');
+            if (videoFile && videoFile.size > 40000000) { // Adjust the size limit as needed
+                alert('Video file size exceeds the limit (40 MB). Please choose a smaller file.');
                 event.preventDefault(); // Prevent the form from being submitted
             }
 
