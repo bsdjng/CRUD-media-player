@@ -29,12 +29,12 @@ $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
                 <a class="Dropdown_link" href="Account.php">
                     <p>go to your account</p>
                 </a>
-                <button class="Dropdown_link" onclick="openDialog()">
+                <button class="Dropdown_link" onclick="openSettingDialog()">
                     <p>Change account settings</p>
                 </button>
-                <a class="Dropdown_link" href="VideoCreator.php">
-                    <p>Create a new video</p>
-                </a>
+                <button class="Dropdown_link" onclick="openCreateVideoDialog()">
+                    <p>Create a new video!</p>
+                </button>
                 <a class="Dropdown_link" href="Logout.php">
                     <p>LogOut</p>
                 </a>

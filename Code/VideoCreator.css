@@ -1,45 +1,38 @@
-body{
-    margin: 0;
-    padding: 0;
-    background-color: cadetblue;
-}
-
-.CenterDiv{
+#createVideoDialog{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 30%;
-    height: 70%;
+    height: 80%;
     position: absolute;
     border: solid black;
     background-color: blueviolet;
-    border-radius: 10%;
-    transition: all .2s ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
-    align-items: center;
+    border-radius: 20px;
+    color: ghostwhite;
 }
-#div1{
-    width: 100%;
-    text-align: center;
-}
-#div2{
-    width: 100%;
-}
-#center:hover{
-    box-shadow: 0px 0px 50px 5px;
+::backdrop{
+    background-color: rgba(0, 0, 0, 0.600);
+    }
+#closebtn{
+    top: 0;
+    left: 0;
+    position: absolute;
+    border: none;
+    box-shadow: 2px 2px 5px;
+    border-radius: 10px;
+    padding: 10px;
 }
 #videoSubmitForm{
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
 }
 
-#videoName, #video, #videoThumbnail, #videoDescription{
-    margin-top: 25px;
-    margin-bottom: 25px;
+#videoName, #video, #videoThumbnail, #videoDescription, #submitBtn{
+    background-color: #22303C;
+    color: ghostwhite;
     width: 350px;
     height: 50px;
     border-radius: 20px;

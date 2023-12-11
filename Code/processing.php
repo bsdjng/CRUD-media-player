@@ -228,5 +228,49 @@ function handleAddComment() {
 
 function ChangeCreatorSettings(){
     global $pdo;
-}
+        $newUsername = isset($_POST['newUsername']) ? htmlspecialchars($_POST['newUsername']) : '';
+        $newDescription = isset($_POST['newDescription']) ? htmlspecialchars($_POST['newDescription']) : '';
+
+        // Update username if provided
+        if (!empty($newUsername)) {
+            $sqlUpdateUsername = "UPDATE accounts SET username = :new_username WHERE id = :account_id";
+            $stmt = $pdo->prepare($sqlUpdateUsername);
+            $stmt->bindParam(':new_username', $newUsername, PDO::PARAM_STR);
+            $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+        // Update description if provided
+        if (!empty($newDescription)) {
+            $sqlUpdateDescription = "UPDATE accounts SET about_me = :new_description WHERE id = :account_id";
+            $stmt = $pdo->prepare($sqlUpdateDescription);
+            $stmt->bindParam(':new_description', $newDescription, PDO::PARAM_STR);
+            $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+        // Handle profile picture update
+        if (isset($_FILES['newProfilePicture']) && $_FILES['newProfilePicture']['error'] == UPLOAD_ERR_OK) {
+            $profilePictureData = file_get_contents($_FILES['newProfilePicture']['tmp_name']);
+            $sqlUpdateProfilePicture = "UPDATE accounts SET profile_picture = :profile_picture WHERE id = :account_id";
+            $stmt = $pdo->prepare($sqlUpdateProfilePicture);
+            $stmt->bindParam(':profile_picture', $profilePictureData, PDO::PARAM_LOB);
+            $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+        // Handle banner update
+        if (isset($_FILES['newBanner']) && $_FILES['newBanner']['error'] == UPLOAD_ERR_OK) {
+            $bannerData = file_get_contents($_FILES['newBanner']['tmp_name']);
+            $sqlUpdateBanner = "UPDATE accounts SET banner = :banner WHERE id = :account_id";
+            $stmt = $pdo->prepare($sqlUpdateBanner);
+            $stmt->bindParam(':banner', $bannerData, PDO::PARAM_LOB);
+            $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+        // Redirect or send a response back as needed
+        header("Location: main.php");
+        exit();
+    }
+
 ?>

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="Header.css">
     <link rel="stylesheet" href="DefaultVideoGrid.css">
     <link rel="stylesheet" href="AccountSettings.css">
+    <link rel="stylesheet" href="VideoCreator.css">
 </head>
 
 <body>
@@ -18,6 +19,7 @@
     require("Header.php");
     require("Search.php");
     require("AccountSettings.php");
+    require("VideoCreator.php");
     if (isset($_GET["search"]) && !empty($_GET["search"])) {
         $searchValue = $_GET["search"];
         var_dump($searchValue);
