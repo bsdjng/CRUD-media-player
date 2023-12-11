@@ -17,11 +17,12 @@
 }
 
 #InputFormAccountIMG{
+    background-position: center;
+    object-fit: scale-down;
+    border-radius: 50%;
+    background-color: rgb(30, 44, 56);
     height: 100px;
     width: 100px;
-    background-position: center;
-    object-fit: contain;
-    border-radius: 50%;
 }
 
 #newCommentText {

@@ -59,7 +59,7 @@ video {
     content: ''; /* Empty content for the like image */
     width: 20px; /* Adjust the width of the image */
     height: 20px; /* Adjust the height of the image */
-    background-image: url(../images/like.png);
+    background-image: url(../../images/like.png);
     background-size: contain;
     background-repeat: no-repeat;
 }
@@ -73,7 +73,7 @@ video {
     content: ''; /* Empty content for the dislike image */
     width: 20px; /* Adjust the width of the image */
     height: 20px; /* Adjust the height of the image */
-    background-image: url(../images/dislike.png);
+    background-image: url(../../images/dislike.png);
     background-size: contain;
     background-repeat: no-repeat;
     transform: scaleX(-1); 
