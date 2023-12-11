@@ -4,35 +4,14 @@
         <h1>Submit your video here!</h1>
         <input type="hidden" name="action" value="upload_video">
         <input type="text" placeholder="Video Title" name="videoName" id="videoName" maxlength="55" required>
-        <!-- test -->
-<!--         
-        <div id="profilePicturePreview" class="image-preview">
-                <img id="previewProfilePicture" src="<?php echo $profilePicture; ?>" alt="Preview">
-        </div>
-        <input type="file" name="video" id="video" accept="video/*" required onchange="previewImage(this, 'previewProfilePicture')">
-
-            <p class="liText">Change Banner:</p>
-        <div id="bannerPreview" class="image-preview">
-                <img id="previewBanner" src="" alt="please place a thumbnail">
-        </div>
-        <input type="file" name="videoThumbnail" id="videoThumbnail" accept="image/*" required> -->
-
-
         <div class="File-Select-Preview">
             <video id="videoPreview" src="" autoplay("true")></video>
             <input type="file" name="video" accept="video/*" required onchange="previewFile('video', 'videoPreview')">
         </div>
-
         <div class="File-Select-Preview">
             <img id="thumbnailPreview" src="" alt="please select a thumbnail">
             <input type="file" name="videoThumbnail" accept="image/*" required onchange="previewFile('videoThumbnail', 'thumbnailPreview')">
         </div>
-
-
-
-
-
-        <!-- endTest -->
         <input type="text" placeholder="Video description" name="videoDescription" id="videoDescription" required>
         <input type="hidden" name="MAX_FILE_SIZE" value="41943040">
         <input type="submit" value="Upload video" id="submitBtn">

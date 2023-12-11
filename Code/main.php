@@ -5,26 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OurTube</title>
-    <link rel="stylesheet" href="Main.css">
-    <link rel="stylesheet" href="Header.css">
-    <link rel="stylesheet" href="DefaultVideoGrid.css">
-    <link rel="stylesheet" href="AccountSettings.css">
-    <link rel="stylesheet" href="VideoCreator.css">
+    <link rel="stylesheet" href="Css/Main.css">
+    <link rel="stylesheet" href="Css/Header.css">
+    <link rel="stylesheet" href="Css/DefaultVideoGrid.css">
+    <link rel="stylesheet" href="Css/AccountSettings.css">
+    <link rel="stylesheet" href="Css/VideoCreator.css">
 </head>
 
 <body>
     <?php
     session_start();
-    require("Connection.php");
-    require("Header.php");
-    require("Search.php");
-    require("AccountSettings.php");
-    require("VideoCreator.php");
+    require("Requires/Connection.php");
+    require("Requires/Header.php");
+    require("Requires/Search.php");
+    require("Requires/AccountSettings.php");
+    require("Requires/VideoCreator.php");
     if (isset($_GET["search"]) && !empty($_GET["search"])) {
         $searchValue = $_GET["search"];
         var_dump($searchValue);
     } else {
-        require("DefaultVideoGrid.php");
+        require("Requires/DefaultVideoGrid.php");
     }
 ?>
 

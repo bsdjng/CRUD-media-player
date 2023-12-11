@@ -11,17 +11,17 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OurTube</title>
-    <link rel="stylesheet" href="Header.css">
-    <link rel="stylesheet" href="VideoStyle.css">
-    <link rel="stylesheet" href="Comments.css">
+    <link rel="stylesheet" href="Css/Header.css">
+    <link rel="stylesheet" href="Css/VideoStyle.css">
+    <link rel="stylesheet" href="Css/Comments.css">
 </head>
 
 <body>
 
     <?php
-    require("Header.php");
-    require("Connection.php");
-    require("Search.php");
+    require("Requires/Header.php");
+    require("Requires/Connection.php");
+    require("Requires/Search.php");
 
     if (isset($_GET['id'])) {
         // Get video id from $_GET
@@ -139,7 +139,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
                 <div class="text-container">
                     <?php
-                    require('Comments.php');
+                    require('Requires/Comments.php');
                     ?>
                 </div>
             </div>

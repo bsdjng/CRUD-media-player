@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require("Connection.php");
+require("Requires/Connection.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if the action is set in the POST data
@@ -95,7 +95,7 @@ function handleRegistration() {
             $_SESSION['account_id'] = $account_id;
             $_SESSION['logged_in'] = true;
 
-            header('Location: Main.php');
+            header('Location: ../Main.php');
             exit();
         }
     } else {

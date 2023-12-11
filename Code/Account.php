@@ -10,15 +10,15 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OurTube</title>
-    <link rel="stylesheet" href="Main.css">
-    <link rel="stylesheet" href="Header.css">
-    <link rel="stylesheet" href="DefaultVideoGrid.css">
+    <link rel="stylesheet" href="Css/Main.css">
+    <link rel="stylesheet" href="Css/Header.css">
+    <link rel="stylesheet" href="Css/DefaultVideoGrid.css">
 </head>
 
 <body>
     <?php
-    require 'Header.php';
-    require 'Connection.php';
+    require 'Requires/Header.php';
+    require 'Requires/Connection.php';
 
     if (isset($_GET['id'])) {
         $idParam = $_GET['id'];
