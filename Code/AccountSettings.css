@@ -1,15 +1,72 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: cadetblue;
+#accountSettingsDialog{
+    width: 30%;
+    height: 70%;
+    border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: blueviolet;
+    text-align: center;
+    color: ghostwhite;
+}
+::backdrop{
+background-color: rgba(0, 0, 0, 0.600);
+}
+#previewProfilePicture{
+    width: 100px;
+}
+#previewBanner{
+    width: 100px;
+}
+.FormText{
+    width: 70%;
 }
 
-.centerDiv {
+#UpdateAccountform{
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+.accountFormLi{
+    width: 50%;
+    border: solid black 2px;
+    border-radius: 20px;
+    background-color: #22303C;
+
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    margin: 0 auto;
+    padding: 10px; 
+}
+.btns{
+    border: solid black 1px;
+    border-radius: 10px;
+    padding: 10px;
+}
+#closeBtn{
+    top: 0;
+    left: 0;
+    position: absolute;
+    border: none;
+    box-shadow: 2px 2px 5px;
+    border-radius: 10px;
+    padding: 10px;
+}
+.liText{
+    padding: 0;
+    margin: 0px;
+}
+/* .centerDiv {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 30%;
-    height: 70%;
+    width: 100%;
     position: absolute;
     background-color: ghostwhite;
     display: flex;
@@ -35,4 +92,4 @@ img {
 
 .editForm{
     display: none;
-}
+} */

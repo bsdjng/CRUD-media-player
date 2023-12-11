@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="Main.css">
     <link rel="stylesheet" href="Header.css">
     <link rel="stylesheet" href="DefaultVideoGrid.css">
+    <link rel="stylesheet" href="AccountSettings.css">
 </head>
 
 <body>
@@ -16,6 +17,7 @@
     require("Connection.php");
     require("Header.php");
     require("Search.php");
+    require("AccountSettings.php");
     if (empty($_GET["search"]) == false) {
         var_dump($_GET["search"]);
     } else {
