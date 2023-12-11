@@ -54,6 +54,9 @@ a {
     /* padding: 10px; */
     padding-bottom: 5px;
 }
+#view{
+    color: orange;
+}
 
 .Dropdown_link {
     background-color: transparent;

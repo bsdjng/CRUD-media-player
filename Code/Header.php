@@ -26,7 +26,7 @@ $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
         ?>
         <li class="HeaderItem" id="ProfileDropdown" style="background-image: url('<?php echo $imageSrc; ?>')">
             <div class="Dropdown_menu">
-                <a href="Account.php"><button id="DropdownButtenSplit" class="Dropdown_link">Bas zet hier current user naam<br>View your Channel</button></a>
+                <a href="Account.php"><button id="DropdownButtenSplit" class="Dropdown_link">Bas zet hier current user naam<br><p id="view">View your Channel</p></button></a>
                 <button class="Dropdown_link" onclick="openSettingDialog()">
                     Change account settings
                 </button>
