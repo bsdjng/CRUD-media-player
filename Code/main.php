@@ -18,12 +18,14 @@
     require("Header.php");
     require("Search.php");
     require("AccountSettings.php");
-    if (empty($_GET["search"]) == false) {
-        var_dump($_GET["search"]);
+    if (isset($_GET["search"]) && !empty($_GET["search"])) {
+        $searchValue = $_GET["search"];
+        var_dump($searchValue);
     } else {
         require("DefaultVideoGrid.php");
     }
-    ?>
+?>
+
 </body>
 
 </html>

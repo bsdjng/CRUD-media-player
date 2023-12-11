@@ -19,6 +19,7 @@ include 'Header.php';
         </div>
         <div id="div2">
             <form action="VideoProcessing.php" method="post" id="videoSubmitForm" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="upload_video">
                 <input type="text" placeholder="Video Title" name="videoName" id="videoName" maxlength="55" required><br>
                 <input type="file" name="video" id="video" accept="video/*" required>please insert video<br>
                 <input type="file" name="videoThumbnail" id="videoThumbnail" accept="image/*" required>please insert thumbnail<br>

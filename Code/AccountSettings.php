@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-
     <?php
     require 'Connection.php';
 
@@ -61,7 +60,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <dialog id="accountSettingsDialog">
     <button id="closeBtn" onclick="closeDialog()">cancel</button>
 
-        <form id="UpdateAccountform" action="main.php" method="dialog">
+        <form id="UpdateAccountform" action="main.php" method="post">
             <li class="accountFormLi">
                 <p class="liText">change username:</p>
                 <input type="text" class="FormText" placeholder="<?php echo $account['username']; ?>">

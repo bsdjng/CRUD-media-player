@@ -15,7 +15,7 @@ $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
 <ol class="Header">
     <li class="HeaderItem"><a id="HeaderHomeLink" href="main.php"></a></li>
     <li id="SearchBar">
-        <form action="main.php" method="post">
+        <form action="main.php" method="">
             <input id="SearchBarText" name="search" type="text" placeholder="Search">
             <input id="SearchBarsubmit" type="submit" value="">
         </form>

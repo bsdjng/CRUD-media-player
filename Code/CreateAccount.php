@@ -12,6 +12,7 @@
     ?>
     <div id="center">
     <form action="processing.php" method="post" id="form1">
+        <input type="hidden" name="action" value="register">
         <input type="text" id="username" name="username" placeholder="Your username" required>
         <input type="email" id="email" name="email" placeholder="Email" required>
         <input type="password" id="password" name="password" placeholder="Password" required>

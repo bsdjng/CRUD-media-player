@@ -16,6 +16,7 @@
         </div>
         <div id="div2">
             <form action="LoginProcessing.php" method="post" id="form1">
+                <input type="hidden" name="action" value="login">
                 <input type="email" name="email" placeholder="email" id="email" required><br>
                 <input type="password" name="password" placeholder="Password" id="password" required>
             </form>
