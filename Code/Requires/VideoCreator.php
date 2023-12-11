@@ -5,7 +5,7 @@
         <input type="hidden" name="action" value="upload_video">
         <input type="text" placeholder="Video Title" name="videoName" id="videoName" maxlength="55" required>
         <div class="File-Select-Preview">
-            <video id="videoPreview" src="" autoplay("true")></video>
+            <video id="videoPreview" src="" autoplay muted loop></video>
             <input type="file" name="video" accept="video/*" required onchange="previewFile('video', 'videoPreview')">
         </div>
         <div class="File-Select-Preview">
