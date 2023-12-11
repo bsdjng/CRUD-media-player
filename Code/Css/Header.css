@@ -15,7 +15,6 @@
 }
 
 .HeaderItem {
-    min-width: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,6 +25,9 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-color: rgb(30, 44, 56);
+    border-radius: 50%;
+    width: 60px;
     z-index: 5;
 }
 
@@ -86,7 +88,7 @@ a {
     background-position: center;
     background-size: cover;
     display: block;
-    width: 100%;
+    width: 100px;
     height: 100%;
     text-decoration: none;
 }
