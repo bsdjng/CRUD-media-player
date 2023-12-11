@@ -85,6 +85,16 @@ function handleRegistration() {
 
             $stmt->execute();
 
+            // Get the ID of the newly inserted record
+            $account_id = $pdo->lastInsertId();
+
+            // Start the session
+            session_start();
+
+            // Set session variables
+            $_SESSION['account_id'] = $account_id;
+            $_SESSION['logged_in'] = true;
+
             header('Location: Main.php');
             exit();
         }
