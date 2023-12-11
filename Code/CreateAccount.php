@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Your Account</title>
-    <link rel="stylesheet" href="CreateAccount.css">
+    <link rel="stylesheet" href="Css/CreateAccount.css">
 </head>
 <body>
     <?php
-        require("Connection.php")
+        require("Requires/Connection.php")
     ?>
     <div id="center">
     <form action="processing.php" method="post" id="form1">

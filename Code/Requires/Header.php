@@ -39,7 +39,7 @@ $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
         </li>
     <?php else : ?>
         <li class="HeaderItem">
-            <a id="HeaderUserLink" href="AccountLogin.php">log in</a>
+            <a id="HeaderUserLink" href="Login.php">log in</a>
         </li>
     <?php endif; ?>
 </ol>

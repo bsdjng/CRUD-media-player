@@ -82,7 +82,7 @@ a {
 
 /* left homebutton */
 #HeaderHomeLink {
-    background-image: url(../images/home.png);
+    background-image: url(../../images/home.png);
     background-position: center;
     background-size: cover;
     display: block;
@@ -129,7 +129,7 @@ a {
 
 #SearchBarsubmit {
     height: 100%;
-    background-image: url("../images/search.png");
+    background-image: url("../../images/search.png");
     background-size: 60%;
     background-repeat: no-repeat;
     background-position: center;
