@@ -37,7 +37,6 @@ background-color: rgba(0, 0, 0, 0.600);
     border: solid black 2px;
     border-radius: 20px;
     background-color: #22303C;
-
     margin: 0px;
     padding: 0px;
     list-style: none;
@@ -51,7 +50,7 @@ background-color: rgba(0, 0, 0, 0.600);
 }
 #closeBtn{
     top: 0;
-    left: 0;
+    right: 0;
     position: absolute;
     border: none;
     box-shadow: 2px 2px 5px;

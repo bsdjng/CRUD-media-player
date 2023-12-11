@@ -1,11 +1,38 @@
 <dialog id="createVideoDialog">
     <button id="closebtn" onclick="closeCreateVideoDialog()">cancel</button>
-    <form action="VideoProcessing.php" method="post" id="videoSubmitForm" enctype="multipart/form-data">
+    <form action="processing.php" method="post" id="videoSubmitForm" enctype="multipart/form-data">
         <h1>Submit your video here!</h1>
         <input type="hidden" name="action" value="upload_video">
         <input type="text" placeholder="Video Title" name="videoName" id="videoName" maxlength="55" required>
-        <input type="file" name="video" id="video" accept="video/*" required>
-        <input type="file" name="videoThumbnail" id="videoThumbnail" accept="image/*" required>
+        <!-- test -->
+<!--         
+        <div id="profilePicturePreview" class="image-preview">
+                <img id="previewProfilePicture" src="<?php echo $profilePicture; ?>" alt="Preview">
+        </div>
+        <input type="file" name="video" id="video" accept="video/*" required onchange="previewImage(this, 'previewProfilePicture')">
+
+            <p class="liText">Change Banner:</p>
+        <div id="bannerPreview" class="image-preview">
+                <img id="previewBanner" src="" alt="please place a thumbnail">
+        </div>
+        <input type="file" name="videoThumbnail" id="videoThumbnail" accept="image/*" required> -->
+
+
+        <div class="File-Select-Preview">
+            <video id="videoPreview" src="" autoplay("true")></video>
+            <input type="file" name="video" accept="video/*" required onchange="previewFile('video', 'videoPreview')">
+        </div>
+
+        <div class="File-Select-Preview">
+            <img id="thumbnailPreview" src="" alt="please select a thumbnail">
+            <input type="file" name="videoThumbnail" accept="image/*" required onchange="previewFile('videoThumbnail', 'thumbnailPreview')">
+        </div>
+
+
+
+
+
+        <!-- endTest -->
         <input type="text" placeholder="Video description" name="videoDescription" id="videoDescription" required>
         <input type="hidden" name="MAX_FILE_SIZE" value="41943040">
         <input type="submit" value="Upload video" id="submitBtn">
@@ -40,11 +67,29 @@
     }
 
     function toggleForm(formId) {
-            var form = document.getElementById(formId);
-            if (form.style.display === 'none') {
-                form.style.display = 'block';
+        var form = document.getElementById(formId);
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+
+    function previewFile(inputName, previewElementId) {
+            var input = document.querySelector('input[name="' + inputName + '"]');
+            var previewElement = document.getElementById(previewElementId);
+            
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                previewElement.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
             } else {
-                form.style.display = 'none';
+                previewElement.src = "";
             }
         }
 </script>

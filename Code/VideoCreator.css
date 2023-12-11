@@ -3,7 +3,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 30%;
-    height: 80%;
+    height: 90%;
     position: absolute;
     border: solid black;
     background-color: blueviolet;
@@ -15,12 +15,12 @@
     }
 #closebtn{
     top: 0;
-    left: 0;
+    right: 0;
     position: absolute;
     border: none;
     box-shadow: 2px 2px 5px;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 5px;
+    padding: 5px;
 }
 #videoSubmitForm{
     display: flex;
@@ -29,8 +29,19 @@
     justify-content: space-evenly;
     height: 100%;
 }
-
-#videoName, #video, #videoThumbnail, #videoDescription, #submitBtn{
+.File-Select-Preview{
+    width: 80%;
+    height: 200px;
+    border-radius: 20px;
+    background-color: #22303C;
+    align-items: center;
+    text-align: center;
+}
+#videoPreview, #thumbnailPreview{
+    max-width: 100%;
+    max-height: 80%;
+}
+#videoName, #video, #videoDescription, #submitBtn{
     background-color: #22303C;
     color: ghostwhite;
     width: 350px;

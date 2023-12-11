@@ -26,18 +26,14 @@ $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
         ?>
         <li class="HeaderItem" id="ProfileDropdown" style="background-image: url('<?php echo $imageSrc; ?>')">
             <div class="Dropdown_menu">
-                <a class="Dropdown_link" href="Account.php">
-                    <p>go to your account</p>
-                </a>
+                <a href="Account.php"><button id="DropdownButtenSplit" class="Dropdown_link">Bas zet hier current user naam<br>View your Channel</button></a>
                 <button class="Dropdown_link" onclick="openSettingDialog()">
-                    <p>Change account settings</p>
+                    Change account settings
                 </button>
-                <button class="Dropdown_link" onclick="openCreateVideoDialog()">
-                    <p>Create a new video!</p>
+                <button class="Dropdown_link" id="DropdownButtenSplit" onclick="openCreateVideoDialog()">
+                    Create a new video!
                 </button>
-                <a class="Dropdown_link" href="Logout.php">
-                    <p>LogOut</p>
-                </a>
+                <a href="Logout.php"><button class="Dropdown_link">LogOut</button></a>
                 <!-- ALS ER NIEUWE LINK MOET ZIEN VOEG DIE HIER TOE -->
             </div>
         </li>

@@ -89,24 +89,24 @@ if (session_status() === PHP_SESSION_NONE) {
         // Reset image previews to default
         document.getElementById('previewProfilePicture').src = "<?php echo $profilePicture; ?>";
         document.getElementById('previewBanner').src = "<?php echo $banner; ?>";
-}
-function previewImage(input, previewId) {
-    var preview = document.getElementById(previewId);
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block'; // Show the preview
-            preview.alt = "<?php echo $profilePicture; ?>"; // Set alt attribute
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        preview.src = '';
-        preview.style.display = 'none'; // Hide the preview
-        preview.alt = ''; // Clear alt attribute
     }
-}
+    function previewImage(input, previewId) {
+        var preview = document.getElementById(previewId);
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block'; // Show the preview
+                preview.alt = "<?php echo $profilePicture; ?>"; // Set alt attribute
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none'; // Hide the preview
+            preview.alt = ''; // Clear alt attribute
+        }
+    }
 </script>
