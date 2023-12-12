@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require 'Connection.php';
 
-$sqlAccounts = "SELECT profile_picture FROM accounts WHERE id = :accountId";
+$sqlAccounts = "SELECT username, profile_picture FROM accounts WHERE id = :accountId";
 $accountsResult = $pdo->prepare($sqlAccounts);
 $accountsResult->bindParam(':accountId', $_SESSION['account_id'], PDO::PARAM_INT);
 $accountsResult->execute();
@@ -26,7 +26,9 @@ $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
         ?>
         <li class="HeaderItem" id="ProfileDropdown" style="background-image: url('<?php echo $imageSrc; ?>')">
             <div class="Dropdown_menu">
-                <a href="Account.php"><button id="DropdownButtenSplit" class="Dropdown_link">Bas zet hier current user naam<br><p id="view">View your Channel</p></button></a>
+                <a href="Account.php"><button id="DropdownButtenSplit" class="Dropdown_link"><?php echo $loggedInAccount['username'] ?><br>
+                        <p id="view">View your Channel</p>
+                    </button></a>
                 <button class="Dropdown_link" onclick="openSettingDialog()">
                     Change account settings
                 </button>

@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require("Requires/Connection.php");
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if the action is set in the POST data
     if (isset($_POST["action"])) {
@@ -14,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Handle user registration
                 handleRegistration();
                 break;
-                
+
             case "login":
                 // Handle user login
                 handleLogin();
@@ -35,7 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Handle adding a comment
                 handleAddComment();
                 break;
-            
+
+            case "handle_like":
+                handle_like();
+                break;
 
             default:
                 echo "Invalid action.";
@@ -47,11 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "Invalid request method.";
 }
 
-function handleRegistration() {
+function handleRegistration()
+{
     global $pdo;
     // Handle user registration logic here
-    $username = $_POST["username"];
-    $email = $_POST["email"];
+    $username = sanitize($_POST['username']);
+    $email = sanitize($_POST['email']);
     $password = $_POST["password"];
     $repeat_password = $_POST["repeat_password"];
 
@@ -95,7 +98,7 @@ function handleRegistration() {
             $_SESSION['account_id'] = $account_id;
             $_SESSION['logged_in'] = true;
 
-            header('Location: ../Main.php');
+            header('Location: Main.php');
             exit();
         }
     } else {
@@ -103,10 +106,11 @@ function handleRegistration() {
     }
 }
 
-function handleVideoUpload() {
+function handleVideoUpload()
+{
     global $pdo;
     // Handle video upload logic here
-    
+
     // gebruiker kan niet vaker uploaden binnen 10 minuten
     $minTimeBetweenUploads = 600;
     if (isset($_SESSION['last_upload_time']) && time() - $_SESSION['last_upload_time'] < $minTimeBetweenUploads) {
@@ -114,10 +118,10 @@ function handleVideoUpload() {
         exit();
     }
 
-    $videoName = $_POST['videoName'];
+    $videoName = sanitize($_POST['videoName']);
     $videoThumbnailFile = $_FILES['videoThumbnail'];
     $videoFile = $_FILES['video'];
-    $videoDescription = $_POST['videoDescription'];
+    $videoDescription = sanitize($_POST['videoDescription']);
     $currentDate = (new DateTime())->format('Y-m-d H:i:s');
 
     // process the files uit de post
@@ -167,10 +171,10 @@ function handleVideoUpload() {
     } else {
         echo "Error inserting video information: " . print_r($stmtVideoInsert->errorInfo(), true);
     }
-
 }
 
-function handleLogin() {
+function handleLogin()
+{
     global $pdo;
     // Handle user login logic here
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -178,17 +182,17 @@ function handleLogin() {
         if (isset($_POST["email"]) && isset($_POST["password"])) {
             $email = $_POST["email"];
             $password = $_POST["password"];
-    
+
             //zoek de user op basis van email
             $sql = "SELECT id, email, password FROM Accounts WHERE email = :email";
             $statement = $pdo->prepare($sql);
             $statement->bindParam(':email', $email, PDO::PARAM_STR);
             $statement->execute();
-    
+
             //activeert als de email in de database staat
             if ($statement->rowCount() > 0) {
                 $account = $statement->fetch(PDO::FETCH_ASSOC);
-    
+
                 // checkt het wachtwoord
                 if (password_verify($password, $account['password'])) {
                     session_start();
@@ -208,26 +212,22 @@ function handleLogin() {
     } else {
         echo "Invalid request method.";
     }
-
 }
 
-function handleAddComment() {
+function handleAddComment()
+{
     global $pdo;
     // Handle adding a comment logic here
     $videoId = $_POST['videoId'];
     $commenterID = $_SESSION['account_id'];
-    $commentText = $_POST['newCommentText'];
-    $commentText = htmlspecialchars($commentText, ENT_QUOTES, 'UTF-8');
+    $commentText = sanitize($_POST['newCommentText']);
     $date_Now = (new DateTime())->format('Y-m-d H:i:s');
-
-    // Sanitize the comment text to prevent HTML, CSS, or JavaScript injection
-    $commentText = htmlspecialchars($commentText, ENT_QUOTES, 'UTF-8');
 
     $sqlAddComment = "INSERT INTO comments (video_id, account_id, comment_text, created_at) VALUES (:video_id, :account_id, :comment_text, :created_at)";
     $stmtAddComment = $pdo->prepare($sqlAddComment);
     $stmtAddComment->bindParam(':video_id', $videoId, PDO::PARAM_INT);
     $stmtAddComment->bindParam(':account_id', $commenterID, PDO::PARAM_INT);
-    $stmtAddComment->bindParam(':comment_text', $commentText, PDO::PARAM_STR);
+    $stmtAddComment->bindParam(':comment_text', $comment, PDO::PARAM_STR);
     $stmtAddComment->bindParam(':created_at', $date_Now, PDO::PARAM_STR);
 
     $stmtAddComment->execute();
@@ -236,51 +236,128 @@ function handleAddComment() {
     exit();
 }
 
-function ChangeCreatorSettings(){
+function ChangeCreatorSettings()
+{
     global $pdo;
-        $newUsername = isset($_POST['newUsername']) ? htmlspecialchars($_POST['newUsername']) : '';
-        $newDescription = isset($_POST['newDescription']) ? htmlspecialchars($_POST['newDescription']) : '';
+    $newUsername = isset($_POST['newUsername']) ? htmlspecialchars($_POST['newUsername']) : '';
+    $newDescription = isset($_POST['newDescription']) ? htmlspecialchars($_POST['newDescription']) : '';
 
-        // Update username if provided
-        if (!empty($newUsername)) {
-            $sqlUpdateUsername = "UPDATE accounts SET username = :new_username WHERE id = :account_id";
-            $stmt = $pdo->prepare($sqlUpdateUsername);
-            $stmt->bindParam(':new_username', $newUsername, PDO::PARAM_STR);
-            $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-
-        // Update description if provided
-        if (!empty($newDescription)) {
-            $sqlUpdateDescription = "UPDATE accounts SET about_me = :new_description WHERE id = :account_id";
-            $stmt = $pdo->prepare($sqlUpdateDescription);
-            $stmt->bindParam(':new_description', $newDescription, PDO::PARAM_STR);
-            $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-        // Handle profile picture update
-        if (isset($_FILES['newProfilePicture']) && $_FILES['newProfilePicture']['error'] == UPLOAD_ERR_OK) {
-            $profilePictureData = file_get_contents($_FILES['newProfilePicture']['tmp_name']);
-            $sqlUpdateProfilePicture = "UPDATE accounts SET profile_picture = :profile_picture WHERE id = :account_id";
-            $stmt = $pdo->prepare($sqlUpdateProfilePicture);
-            $stmt->bindParam(':profile_picture', $profilePictureData, PDO::PARAM_LOB);
-            $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-
-        // Handle banner update
-        if (isset($_FILES['newBanner']) && $_FILES['newBanner']['error'] == UPLOAD_ERR_OK) {
-            $bannerData = file_get_contents($_FILES['newBanner']['tmp_name']);
-            $sqlUpdateBanner = "UPDATE accounts SET banner = :banner WHERE id = :account_id";
-            $stmt = $pdo->prepare($sqlUpdateBanner);
-            $stmt->bindParam(':banner', $bannerData, PDO::PARAM_LOB);
-            $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-
-        // Redirect or send a response back as needed
-        header("Location: main.php");
-        exit();
+    // Update username if provided
+    if (!empty($newUsername)) {
+        $sqlUpdateUsername = "UPDATE accounts SET username = :new_username WHERE id = :account_id";
+        $stmt = $pdo->prepare($sqlUpdateUsername);
+        $stmt->bindParam(':new_username', $newUsername, PDO::PARAM_STR);
+        $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+        $stmt->execute();
     }
 
-?>
+    // Update description if provided
+    if (!empty($newDescription)) {
+        $sqlUpdateDescription = "UPDATE accounts SET about_me = :new_description WHERE id = :account_id";
+        $stmt = $pdo->prepare($sqlUpdateDescription);
+        $stmt->bindParam(':new_description', $newDescription, PDO::PARAM_STR);
+        $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+        $stmt->execute();
+    }
+    // Handle profile picture update
+    if (isset($_FILES['newProfilePicture']) && $_FILES['newProfilePicture']['error'] == UPLOAD_ERR_OK) {
+        $profilePictureData = file_get_contents($_FILES['newProfilePicture']['tmp_name']);
+        $sqlUpdateProfilePicture = "UPDATE accounts SET profile_picture = :profile_picture WHERE id = :account_id";
+        $stmt = $pdo->prepare($sqlUpdateProfilePicture);
+        $stmt->bindParam(':profile_picture', $profilePictureData, PDO::PARAM_LOB);
+        $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    // Handle banner update
+    if (isset($_FILES['newBanner']) && $_FILES['newBanner']['error'] == UPLOAD_ERR_OK) {
+        $bannerData = file_get_contents($_FILES['newBanner']['tmp_name']);
+        $sqlUpdateBanner = "UPDATE accounts SET banner = :banner WHERE id = :account_id";
+        $stmt = $pdo->prepare($sqlUpdateBanner);
+        $stmt->bindParam(':banner', $bannerData, PDO::PARAM_LOB);
+        $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    // Redirect or send a response back as needed
+    header("Location: main.php");
+    exit();
+}
+
+function handle_like()
+{
+    global $pdo;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Retrieve data from the POST request
+        $videoId = $_POST['videoId'];
+        $accountId = $_POST['accountId'];
+        $status = $_POST['likeStatus'];
+
+        switch ($status) {
+            case "add_like":
+                $sqlInsert = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 0)";
+                $stmtInsert = $pdo->prepare($sqlInsert);
+                $stmtInsert->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                $stmtInsert->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                $stmtInsert->execute();
+                break;
+            case "add_dislike":
+                $sqlInsert = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 1)";
+                $stmtInsert = $pdo->prepare($sqlInsert);
+                $stmtInsert->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                $stmtInsert->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                $stmtInsert->execute();
+                break;
+            case "remove_like":
+                $sqlDelete = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 0";
+                $stmtDelete = $pdo->prepare($sqlDelete);
+                $stmtDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                $stmtDelete->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                $stmtDelete->execute();
+                break;
+            case "remove_dislike":
+                $sqlDelete = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 1";
+                $stmtDelete = $pdo->prepare($sqlDelete);
+                $stmtDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                $stmtDelete->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                $stmtDelete->execute();
+                break;
+            case "remove_like_add_dislike":
+                $sqlRemoveLike = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 0";
+                $stmtRemoveLike = $pdo->prepare($sqlRemoveLike);
+                $stmtRemoveLike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                $stmtRemoveLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                $stmtRemoveLike->execute();
+
+                $sqlAddDislike = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 1)";
+                $stmtAddDislike = $pdo->prepare($sqlAddDislike);
+                $stmtAddDislike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                $stmtAddDislike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                $stmtAddDislike->execute();
+                break;
+
+            case "remove_dislike_add_like":
+                $sqlRemoveDislike = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 1";
+                $stmtRemoveDislike = $pdo->prepare($sqlRemoveDislike);
+                $stmtRemoveDislike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                $stmtRemoveDislike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                $stmtRemoveDislike->execute();
+
+                $sqlAddLike = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 0)";
+                $stmtAddLike = $pdo->prepare($sqlAddLike);
+                $stmtAddLike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                $stmtAddLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                $stmtAddLike->execute();
+                break;
+            default:
+                echo "Invalid status.";
+                break;
+        }
+    }
+}
+
+function sanitize($dirty)
+{
+    $dirty = htmlspecialchars($dirty, ENT_QUOTES, 'UTF-8');
+    return $dirty;
+}

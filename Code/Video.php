@@ -23,6 +23,8 @@ if (session_status() === PHP_SESSION_NONE) {
     require("Requires/Connection.php");
     require("Requires/Search.php");
 
+    $ipAddress = $_SERVER['REMOTE_ADDR'];
+
     if (isset($_GET['id'])) {
         // Get video id from $_GET
         $videoId = $_GET['id'];
@@ -44,7 +46,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="centerdiv">
                 <div class="video-container">
                     <video id="myVideo" controls ontimeupdate="updateProgress()">
-                        <source src="http://192.168.95.205/CRUD-media-player/Usercontent/<?php echo $video['account_id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
+                        <source src="http://<?php echo $ipAddress ?>/CRUD-media-player/Usercontent/<?php echo $video['account_id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -179,7 +181,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
         function likeVideo(videoId, accountId, likeStatus) {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "like.php", true);
+            xhr.open("POST", "processing.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -188,7 +190,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 }
             };
             // Redirect naar like.php
-            xhr.send("videoId=" + videoId + "&accountId=" + accountId + "&likeStatus=" + likeStatus);
+            xhr.send("videoId=" + videoId + "&accountId=" + accountId + "&likeStatus=" + likeStatus + "&action=handle_like");
         }
 
         function redirectToChannel(accountId) {
