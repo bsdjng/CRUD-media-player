@@ -38,6 +38,7 @@
     cursor: pointer;
     transition: border .2s ease-in-out;
     margin-bottom: 2px;
+    text-wrap:wrap;
 }
 
 #commentsection:focus-within #commentSubmitButton {
