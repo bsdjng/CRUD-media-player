@@ -53,3 +53,10 @@ body{
     border: solid black;
     border-radius: 20px;
 }
+
+@media only screen and (max-width: 768px) {
+    #CenterDiv{
+        width: 100%;
+    }
+
+}
