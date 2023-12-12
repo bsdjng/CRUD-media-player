@@ -18,8 +18,6 @@
     require("Requires/Connection.php");
     require("Requires/Header.php");
     require("Requires/Search.php");
-    require("Requires/AccountSettings.php");
-    require("Requires/VideoCreator.php");
     if (isset($_GET["search"]) && !empty($_GET["search"])) {
         $searchValue = $_GET["search"];
         var_dump($searchValue);

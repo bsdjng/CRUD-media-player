@@ -30,6 +30,7 @@ body {
 
 .ItemThumbnail {
     width: 100%;
+    aspect-ratio: 16/9;
     position: relative;
     background-position: center;
     background-size: contain;
@@ -91,10 +92,8 @@ body {
 
 /* alles hieronder is van Account.php */
 .AccountInformation {
-    /* min-height: 400px; */
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
     align-items: center;
     width: 80%;
     position: absolute;
@@ -107,19 +106,37 @@ body {
     margin-top: 1%;
     border-radius: 20px;
     width: 100%;
-    max-height: 200px;
+    aspect-ratio: 2560 / 423;
+    /* max-height: 200px; */
     object-fit: fill;
 }
 
-.CurrentAccountPFP {
+/* .CurrentAccountPFP {
     height: 250px;
     width: 250px;
     margin: 10px;
     background-position: center;
     background-size: cover;
-    border-radius: 100%;
+    object-fit: cover;
+    border-radius: 50%;
     background-color: rgb(30, 44, 56);
+} */
 
+.CurrentAccountPFP {
+    width: 30%;
+    max-width: 250px; /* Set a maximum width */
+    position: relative;
+    overflow: hidden;
+    background-color: rgb(30, 44, 56);
+    border-radius: 50%; /* Ensure the container is circular */
+}
+
+.CurrentAccountPFP img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; /* Ensure the image inside is also circular */
 }
 
 .Creator{
@@ -148,5 +165,9 @@ body {
     }
   }
 @media only screen and (max-width: 768px) {
+    .CurrentAccountPFP {
+        width: 100%;
+        max-width: none; /* Remove the maximum width for smaller screens */
+    }
 
 }

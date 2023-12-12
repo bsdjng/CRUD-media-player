@@ -3,6 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require 'Connection.php';
+require("AccountSettings.php");
+require("VideoCreator.php");
 
 $sqlAccounts = "SELECT username, profile_picture FROM accounts WHERE id = :accountId";
 $accountsResult = $pdo->prepare($sqlAccounts);
@@ -25,6 +27,7 @@ $loggedInAccount = $accountsResult->fetch(PDO::FETCH_ASSOC);
         $imageSrc = "data:image/png;base64," . base64_encode($loggedInAccount['profile_picture']);
         ?>
         <li class="HeaderItem" id="ProfileDropdown" style="background-image: url('<?php echo $imageSrc; ?>')">
+            <input type="checkbox" id="ProfileDropdownCheckBox">
             <div class="Dropdown_menu">
                 <a href="Account.php"><button id="DropdownButtenSplit" class="Dropdown_link"><?php echo $loggedInAccount['username'] ?><br>
                         <p id="view">View your Channel</p>

@@ -49,8 +49,9 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             <input type="text" name="newDescription" class="FormText" placeholder="<?php echo !empty($account['about_me']) ? $account['about_me'] : 'write about yourself'; ?>" name="newDescription">
         </li>
 
-        <li class="accountFormLi">
-            <input class="btns" type="submit" value="Update account">
+        <li class="accountFormLi" id="SubmitBtns">
+            <input class="btns" type="submit" form="UpdateAccountform"value="Update account">
+
         </li>
     </form>
 

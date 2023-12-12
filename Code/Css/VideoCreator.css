@@ -50,3 +50,10 @@
     border: solid black;
     font-size: 150%;
 }
+
+@media only screen and (max-width: 768px) {
+    #createVideoDialog{
+        width: 100%;
+    }
+
+}

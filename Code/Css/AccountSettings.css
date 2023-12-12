@@ -43,10 +43,16 @@ background-color: rgba(0, 0, 0, 0.600);
     margin: 0 auto;
     padding: 10px; 
 }
+#SubmitBtns{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 300px;
+}
 .btns{
     border: solid black 1px;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 5px;
+    padding: 5px;
 }
 #closeBtn{
     top: 0;
@@ -60,4 +66,11 @@ background-color: rgba(0, 0, 0, 0.600);
 .liText{
     padding: 0;
     margin: 0px;
+}
+
+@media only screen and (max-width: 768px) {
+    #accountSettingsDialog{
+        width: 100%;
+    }
+
 }
