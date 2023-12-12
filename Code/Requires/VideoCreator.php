@@ -55,20 +55,20 @@
     }
 
     function previewFile(inputName, previewElementId) {
-            var input = document.querySelector('input[name="' + inputName + '"]');
-            var previewElement = document.getElementById(previewElementId);
-            
-            var file = input.files[0];
-            var reader = new FileReader();
+        var input = document.querySelector('input[name="' + inputName + '"]');
+        var previewElement = document.getElementById(previewElementId);
 
-            reader.onloadend = function () {
-                previewElement.src = reader.result;
-            }
+        var file = input.files[0];
+        var reader = new FileReader();
 
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                previewElement.src = "";
-            }
+        reader.onloadend = function() {
+            previewElement.src = reader.result;
         }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            previewElement.src = "";
+        }
+    }
 </script>

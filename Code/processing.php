@@ -217,23 +217,26 @@ function handleLogin()
 function handleAddComment()
 {
     global $pdo;
-    // Handle adding a comment logic here
-    $videoId = $_POST['videoId'];
-    $commenterID = $_SESSION['account_id'];
-    $commentText = sanitize($_POST['newCommentText']);
-    $date_Now = (new DateTime())->format('Y-m-d H:i:s');
+    if (!empty($_POST['newCommentText'])) {
+        $videoId = $_POST['videoId'];
+        $commenterID = $_SESSION['account_id'];
+        $commentText = sanitize($_POST['newCommentText']);
+        $date_Now = (new DateTime())->format('Y-m-d H:i:s');
 
-    $sqlAddComment = "INSERT INTO comments (video_id, account_id, comment_text, created_at) VALUES (:video_id, :account_id, :comment_text, :created_at)";
-    $stmtAddComment = $pdo->prepare($sqlAddComment);
-    $stmtAddComment->bindParam(':video_id', $videoId, PDO::PARAM_INT);
-    $stmtAddComment->bindParam(':account_id', $commenterID, PDO::PARAM_INT);
-    $stmtAddComment->bindParam(':comment_text', $comment, PDO::PARAM_STR);
-    $stmtAddComment->bindParam(':created_at', $date_Now, PDO::PARAM_STR);
+        $sqlAddComment = "INSERT INTO comments (video_id, account_id, comment_text, created_at) VALUES (:video_id, :account_id, :comment_text, :created_at)";
+        $stmtAddComment = $pdo->prepare($sqlAddComment);
+        $stmtAddComment->bindParam(':video_id', $videoId, PDO::PARAM_INT);
+        $stmtAddComment->bindParam(':account_id', $commenterID, PDO::PARAM_INT);
+        $stmtAddComment->bindParam(':comment_text', $commentText, PDO::PARAM_STR); // <-- Corrected the variable name
+        $stmtAddComment->bindParam(':created_at', $date_Now, PDO::PARAM_STR);
 
-    $stmtAddComment->execute();
+        $stmtAddComment->execute();
 
-    header('Location: Video.php?id=' . $videoId);
-    exit();
+        header('Location: Video.php?id=' . $videoId);
+        exit();
+    } else {
+        echo 'Something went wrong<br>please try again later';
+    }
 }
 
 function ChangeCreatorSettings()
@@ -358,6 +361,6 @@ function handle_like()
 
 function sanitize($dirty)
 {
-    $dirty = htmlspecialchars($dirty, ENT_QUOTES, 'UTF-8');
-    return $dirty;
+    $clean = htmlspecialchars($dirty, ENT_QUOTES, 'UTF-8');
+    return $clean;
 }

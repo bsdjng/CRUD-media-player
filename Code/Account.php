@@ -96,7 +96,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
                         <div class="ItemThumbnail" style="background-image:url('<?php echo $thumbnail_img; ?>');"></div>
                         <div class="Itemlayout"><?php
-                            echo '<div class="ProfilePicture" style="background-image: url(\'' . $account_img . '\');"></div>'; ?>
+                                                echo '<div class="ProfilePicture" style="background-image: url(\'' . $account_img . '\');"></div>'; ?>
                             <div class="ItemInfoLayout">
                                 <?php
                                 echo '<div class="Vid_Name">' . $userVideo['video_name'] . '</div>';

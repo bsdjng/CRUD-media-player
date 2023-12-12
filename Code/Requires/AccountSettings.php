@@ -3,9 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-    <?php
-    require 'Connection.php';
+<?php
+require 'Connection.php';
 
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
     $sqlAccounts = "SELECT id, username, profile_picture, banner, about_me FROM accounts WHERE id = :account_id";
     $stmt = $pdo->prepare($sqlAccounts);
     $stmt->bindParam(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
@@ -13,19 +14,20 @@ if (session_status() === PHP_SESSION_NONE) {
     $account = $stmt->fetch(PDO::FETCH_ASSOC);
     $profilePicture = "data:image/png;base64," . base64_encode($account['profile_picture']);
     $banner = "data:image/png;base64," . base64_encode($account['banner']);
+}
 ?>
 <!-- <button onclick="openSettingDialog()">Open Account Settings</button> -->
 <dialog id="accountSettingsDialog">
-<button id="closeBtn" onclick="closeSettingDialog()">cancel</button>
+    <button id="closeBtn" onclick="closeSettingDialog()">cancel</button>
 
-    <form id="UpdateAccountform" action="processing.php" method="post"enctype="multipart/form-data">
+    <form id="UpdateAccountform" action="processing.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="action" value="ChangeCreatorSettings">
 
         <li class="accountFormLi">
             <p class="liText">change username:</p>
             <input type="text" name="newUsername" class="FormText" placeholder="<?php echo $account['username']; ?>">
         </li>
-        
+
         <li class="accountFormLi">
             <p class="liText">Change profile picture:</p>
             <div id="profilePicturePreview" class="image-preview">
@@ -74,7 +76,7 @@ if (session_status() === PHP_SESSION_NONE) {
             form.style.display = 'none';
         }
     }
-    
+
     function clearFormInputs() {
         var form = document.getElementById('UpdateAccountform');
         var inputs = form.getElementsByTagName('input');
@@ -90,13 +92,14 @@ if (session_status() === PHP_SESSION_NONE) {
         document.getElementById('previewProfilePicture').src = "<?php echo $profilePicture; ?>";
         document.getElementById('previewBanner').src = "<?php echo $banner; ?>";
     }
+
     function previewImage(input, previewId) {
         var preview = document.getElementById(previewId);
 
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 preview.src = e.target.result;
                 preview.style.display = 'block'; // Show the preview
                 preview.alt = "<?php echo $profilePicture; ?>"; // Set alt attribute

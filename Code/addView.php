@@ -10,4 +10,6 @@ if (isset($_POST['videoId'])) {
     $stmtUpdateViews = $pdo->prepare($sqlUpdateViews);
     $stmtUpdateViews->bindParam(':videoId', $videoId, PDO::PARAM_INT);
     $stmtUpdateViews->execute();
+} else {
+    echo 'wow';
 }
