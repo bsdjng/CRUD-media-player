@@ -16,6 +16,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="Css/Comments.css">
     <link rel="stylesheet" href="Css/AccountSettings.css">
     <link rel="stylesheet" href="Css/VideoCreator.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -157,29 +158,38 @@ if (session_status() === PHP_SESSION_NONE) {
         // Video ID not provided
         echo "Video ID not provided.";
     }
+
+
     ?>
     <script>
         var video = document.getElementById("myVideo");
         var hasWatched30Percent = false;
-        var videoId = <?php echo $videoId; ?>;
-        var accountId = <?php echo $_SESSION['account_id']; ?>;
+        var videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
+        var accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
 
         function updateProgress() {
-            // deze functie checked of je 30 procent van de video hebt gezien en add dan een view
-            var currentTime = video.currentTime;
-            var duration = video.duration;
-
-            var percentageWatched = (currentTime / duration) * 100;
-
-            if (percentageWatched >= 30 && !hasWatched30Percent) {
-                hasWatched30Percent = true;
-                console.log(hasWatched30Percent);
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "addView.php", true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.send("videoId=" + videoId);
-            }
+            jQuery.ajax({
+                type: 'POST',
+                url: 'processing.php',
+                data: {
+                    action: 'addView',
+                    videoId: videoId,
+                },
+                success: function(response) {
+                    console.log("updateProgress() called");
+                },
+                error: function(error) {
+                    console.error('AJAX request failed: ' + error.statusText);
+                }
+            });
         }
+
+        // Call the PHP function when the page loads or in response to user actions
+        $(document).ready(function() {
+            updateProgress();
+        });
+
+
 
         function likeVideo(videoId, accountId, likeStatus) {
             var xhr = new XMLHttpRequest();
@@ -196,7 +206,6 @@ if (session_status() === PHP_SESSION_NONE) {
         }
 
         function redirectToChannel(accountId) {
-            console.log('crazy');
             event.stopPropagation();
             window.location.href = "Account.php?id=" + accountId;
         }

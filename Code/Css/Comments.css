@@ -95,6 +95,7 @@
 
 .commentDetails {
     flex-grow: 1;
+    width:100%;
 }
 
 .commentUserame {
@@ -105,6 +106,7 @@
 .commentText {
     margin-top: 5px;
     word-wrap: break-word;
+    width:95%
 }
 
 .commentDate {

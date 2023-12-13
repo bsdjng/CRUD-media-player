@@ -2,6 +2,12 @@
 
 require("Connection.php");
 
+?>
+<script>
+    console.log('working dude')
+</script>
+<?php
+
 if (isset($_POST['videoId'])) {
     $videoId = $_POST['videoId'];
 
@@ -10,6 +16,9 @@ if (isset($_POST['videoId'])) {
     $stmtUpdateViews = $pdo->prepare($sqlUpdateViews);
     $stmtUpdateViews->bindParam(':videoId', $videoId, PDO::PARAM_INT);
     $stmtUpdateViews->execute();
-} else {
-    echo 'wow';
+} else { ?>
+    <script>
+        console.log('not working dude');
+    </script>
+<?php
 }

@@ -39,6 +39,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 handle_like();
                 break;
 
+            case "addView";
+                addView($_POST['videoId']);
+                break;
+
             default:
                 echo "Invalid action.";
         }
@@ -357,6 +361,16 @@ function handle_like()
                 break;
         }
     }
+}
+
+function addView($videoId)
+{
+    global $pdo;
+    var_dump($_POST);
+    $sqlUpdateViews = "UPDATE videos SET views = views + 1 WHERE id = :videoId";
+    $updateViews = $pdo->prepare($sqlUpdateViews);
+    $updateViews->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+    $updateViews->execute();
 }
 
 function sanitize($dirty)
