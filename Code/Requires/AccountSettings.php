@@ -50,8 +50,11 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         </li>
 
         <li class="accountFormLi" id="SubmitBtns">
-            <input class="btns" type="submit" form="UpdateAccountform"value="Update account">
-
+            <input class="btns" type="submit" form="UpdateAccountform" value="Update account">
+            <form method="post" action="processing.php">
+                <input type="hidden" name="action" value="deleteAccount">
+                <input type="submit" value="Delete account">
+            </form>
         </li>
     </form>
 

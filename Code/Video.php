@@ -164,32 +164,39 @@ if (session_status() === PHP_SESSION_NONE) {
     <script>
         var video = document.getElementById("myVideo");
         var hasWatched30Percent = false;
+        var viewAdded = false;
         var videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
         var accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
 
         function updateProgress() {
-            jQuery.ajax({
-                type: 'POST',
-                url: 'processing.php',
-                data: {
-                    action: 'addView',
-                    videoId: videoId,
-                },
-                success: function(response) {
-                    console.log("updateProgress() called");
-                },
-                error: function(error) {
-                    console.error('AJAX request failed: ' + error.statusText);
-                }
-            });
+            if (hasWatched30Percent && !viewAdded) {
+                jQuery.ajax({
+                    type: 'POST',
+                    url: 'processing.php',
+                    data: {
+                        action: 'addView',
+                        videoId: videoId,
+                    },
+                    success: function(response) {
+                        console.log("updateProgress() called");
+                        viewAdded = true;
+                    },
+                    error: function(error) {
+                        console.error('AJAX request failed: ' + error.statusText);
+                    }
+                });
+            }
         }
 
-        // Call the PHP function when the page loads or in response to user actions
-        $(document).ready(function() {
-            updateProgress();
+
+        video.addEventListener('timeupdate', function() {
+            var percentWatched = (video.currentTime / video.duration) * 100;
+
+            if (percentWatched >= 30 && !hasWatched30Percent) {
+                hasWatched30Percent = true;
+                updateProgress();
+            }
         });
-
-
 
         function likeVideo(videoId, accountId, likeStatus) {
             var xhr = new XMLHttpRequest();

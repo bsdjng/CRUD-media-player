@@ -39,8 +39,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 handle_like();
                 break;
 
-            case "addView";
+            case "addView":
                 addView($_POST['videoId']);
+                break;
+
+            case "deleteAccount":
+                deleteAccount($_SESSION['account_id']);
                 break;
 
             default:
@@ -371,6 +375,33 @@ function addView($videoId)
     $updateViews = $pdo->prepare($sqlUpdateViews);
     $updateViews->bindParam(':videoId', $videoId, PDO::PARAM_INT);
     $updateViews->execute();
+}
+
+function deleteAccount($accountId)
+{
+    global $pdo;
+
+    $sqlVideoDelete = "DELETE FROM videos WHERE account_id = :accountId";
+    $stmtVideoDelete = $pdo->prepare($sqlVideoDelete);
+    $stmtVideoDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+    $stmtVideoDelete->execute();
+
+    $sqlCommentDelete = "DELETE FROM comments WHERE account_id = :accountId";
+    $stmtCommentDelete = $pdo->prepare($sqlCommentDelete);
+    $stmtCommentDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+    $stmtCommentDelete->execute();
+
+    $sqlLikeDelete = "DELETE FROM likes WHERE account_id = :accountId";
+    $stmtLikeDelete = $pdo->prepare($sqlLikeDelete);
+    $stmtLikeDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+    $stmtLikeDelete->execute();
+
+    $sqlAccountDelete = "DELETE FROM accounts WHERE id = :accountId";
+    $stmtAccountDelete = $pdo->prepare($sqlAccountDelete);
+    $stmtAccountDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+    $stmtAccountDelete->execute();
+
+    require('logout.php');
 }
 
 function sanitize($dirty)
