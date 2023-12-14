@@ -1,3 +1,4 @@
+<!-- VIDEO.PHP -->
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -70,7 +71,6 @@ if (session_status() === PHP_SESSION_NONE) {
                         <div class="Like_dislike_btn">
                             <?php
                             if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-                                // Query to check if it's liked or disliked
                                 $sqlCheckLike = "SELECT dislike FROM likes WHERE video_id = :videoId AND account_id = :accountId";
                                 $checkLike = $pdo->prepare($sqlCheckLike);
                                 $checkLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
@@ -89,42 +89,15 @@ if (session_status() === PHP_SESSION_NONE) {
                                 $dislikeCountStmt->bindParam(':videoId', $videoId, PDO::PARAM_INT);
                                 $dislikeCountStmt->execute();
                                 $dislikesCount = $dislikeCountStmt->fetchColumn();
-
-                                if ($userLiked === 0) {
-                                    // Already liked
-                                    $likeStatus = "liked";
-                            ?>
-                                    <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_like')">
-                                        <?php echo $likesCount; ?>
-                                    </button>
-
-                                    <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_like_add_dislike')">
-                                        <?php echo $dislikesCount; ?>
-                                    </button>
-                                <?php
-                                } elseif ($userLiked == 1) {
-                                    // Already disliked
                                 ?>
-                                    <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_dislike_add_like')">
-                                        <?php echo $likesCount; ?>
-                                    </button>
+                                <button id="likeButton" onclick="toggleLikeStatus()">
+                                    <?php echo $likesCount; ?>
+                                </button>
 
-                                    <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'remove_dislike')">
-                                        <?php echo $dislikesCount; ?>
-                                    </button>
+                                <button id="dislikeButton" onclick="toggleDislikeStatus()">
+                                    <?php echo $dislikesCount; ?>
+                                </button>
                                 <?php
-                                } else {
-                                    // Not liked or disliked yet
-                                ?>
-                                    <button id="likeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'add_like')">
-                                        <?php echo $likesCount; ?>
-                                    </button>
-
-                                    <button id="dislikeButton" onclick="likeVideo(<?php echo $videoId; ?>, <?php echo $_SESSION['account_id']; ?>, 'add_dislike')">
-                                        <?php echo $dislikesCount; ?>
-                                    </button>
-                            <?php
-                                }
                             } else {
                                 echo "Log-in to like or dislike this video!";
                             }
@@ -198,6 +171,7 @@ if (session_status() === PHP_SESSION_NONE) {
             }
         });
 
+<<<<<<< Updated upstream
         function likeVideo(videoId, accountId, likeStatus) {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "processing.php", true);
@@ -210,7 +184,32 @@ if (session_status() === PHP_SESSION_NONE) {
             };
             // Redirect naar like.php
             xhr.send("videoId=" + videoId + "&accountId=" + accountId + "&likeStatus=" + likeStatus + "&action=handle_like");
+=======
+        var userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'false'; ?>;
+        var isLiked = false;
+        var isDisliked = false;
+
+        function toggleLikeStatus() {
+            isLiked = !isLiked;
+            isDisliked = false;
+            console.log(isLiked, isDisliked);
+>>>>>>> Stashed changes
         }
+
+        function toggleDislikeStatus() {
+            isDisliked = !isDisliked;
+            isLiked = false;
+            console.log(isLiked, isDisliked);
+        }
+        
+        window.onbeforeunload = function(event){
+            if(isLiked && userLiked == false){
+
+            }
+            if(isDisliked && userLiked == false){
+                
+            }
+        };
 
         function redirectToChannel(accountId) {
             event.stopPropagation();

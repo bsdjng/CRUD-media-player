@@ -1,3 +1,4 @@
+<!-- COMMENTS.PHP -->
 <?php
 // zoek alle comments die bij de video horen
 $sqlComments = "SELECT id, account_id, comment_text, created_at FROM comments WHERE video_id = :videoId ORDER BY created_at DESC";
@@ -81,4 +82,3 @@ foreach ($comments as $comment) {
 <?php
 }
 ?>
-</div>
