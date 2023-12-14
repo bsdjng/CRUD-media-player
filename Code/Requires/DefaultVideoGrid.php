@@ -1,6 +1,6 @@
 <div class="MediaGrid">
     <?php
-    $sqlVideos = "SELECT v.id, v.account_id, v.video_name, v.views, v.likes, v.dislikes, v.thumbnail_image, v.created_at, a.username, a.profile_picture 
+    $sqlVideos = "SELECT v.id, v.account_id, v.video_name, v.views, v.thumbnail_image, v.created_at, a.username, a.profile_picture 
                   FROM videos v 
                   JOIN accounts a ON v.account_id = a.id 
                   ORDER BY v.created_at DESC";

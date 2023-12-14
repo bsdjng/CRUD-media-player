@@ -34,7 +34,7 @@ if (session_status() === PHP_SESSION_NONE) {
         $videoId = $_GET['id'];
 
         // Query to retrieve video information with account details
-        $sqlVideos = "SELECT v.id, v.account_id, v.video_name, v.views, v.likes, v.dislikes, v.video_description, v.created_at, a.username, a.profile_picture 
+        $sqlVideos = "SELECT v.id, v.account_id, v.video_name, v.views, v.video_description, v.created_at, a.username, a.profile_picture 
                       FROM videos v 
                       JOIN accounts a ON v.account_id = a.id 
                       WHERE v.id = :videoId";
@@ -89,7 +89,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                 $dislikeCountStmt->bindParam(':videoId', $videoId, PDO::PARAM_INT);
                                 $dislikeCountStmt->execute();
                                 $dislikesCount = $dislikeCountStmt->fetchColumn();
-                                ?>
+                            ?>
                                 <button id="likeButton" onclick="toggleLikeStatus()">
                                     <?php echo $likesCount; ?>
                                 </button>
@@ -97,7 +97,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <button id="dislikeButton" onclick="toggleDislikeStatus()">
                                     <?php echo $dislikesCount; ?>
                                 </button>
-                                <?php
+                            <?php
                             } else {
                                 echo "Log-in to like or dislike this video!";
                             }
@@ -185,13 +185,13 @@ if (session_status() === PHP_SESSION_NONE) {
             isLiked = false;
             console.log(isLiked, isDisliked);
         }
-        
-        window.onbeforeunload = function(event){
-            if(isLiked && userLiked == false){
+
+        window.onbeforeunload = function(event) {
+            if (isLiked && userLiked == false) {
 
             }
-            if(isDisliked && userLiked == false){
-                
+            if (isDisliked && userLiked == false) {
+
             }
         };
 
