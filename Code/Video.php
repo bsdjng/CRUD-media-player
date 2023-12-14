@@ -170,21 +170,6 @@ if (session_status() === PHP_SESSION_NONE) {
                 updateProgress();
             }
         });
-
-<<<<<<< Updated upstream
-        function likeVideo(videoId, accountId, likeStatus) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "processing.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    // reload pagina
-                    location.reload();
-                }
-            };
-            // Redirect naar like.php
-            xhr.send("videoId=" + videoId + "&accountId=" + accountId + "&likeStatus=" + likeStatus + "&action=handle_like");
-=======
         var userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'false'; ?>;
         var isLiked = false;
         var isDisliked = false;
@@ -193,7 +178,6 @@ if (session_status() === PHP_SESSION_NONE) {
             isLiked = !isLiked;
             isDisliked = false;
             console.log(isLiked, isDisliked);
->>>>>>> Stashed changes
         }
 
         function toggleDislikeStatus() {
