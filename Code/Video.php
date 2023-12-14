@@ -170,9 +170,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 updateProgress();
             }
         });
-        var userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'false'; ?>;
-        var isLiked = false;
-        var isDisliked = false;
+        let userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'null'; ?>;
+        let userLikedString = userLiked === null ? 'null' : userLiked.toString();
+
+        let isLiked = false;
+        let isDisliked = false;
+
+        let test = 0;
 
         function toggleLikeStatus() {
             isLiked = !isLiked;
@@ -187,13 +191,45 @@ if (session_status() === PHP_SESSION_NONE) {
         }
 
         window.onbeforeunload = function(event) {
-            if (isLiked && userLiked == false) {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'processing.php';
 
-            }
-            if (isDisliked && userLiked == false) {
+            var actionInput = document.createElement('input');
+            actionInput.type = 'hidden';
+            actionInput.name = 'action';
+            actionInput.value = 'handle_like'
 
+            var likeActionInput = document.createElement('input');
+            likeActionInput.type = 'hidden';
+            likeActionInput.name = 'likeAction';
+
+            if (isLiked && userLikedString === 'null') {
+                likeActionInput.value = 'add_like';
+            } else if (isLiked && userLikedString === '0') {
+                likeActionInput.value = 'remove_like';
+            } else if (isDisliked && userLikedString === 'null') {
+                likeActionInput.value = 'add_dislike';
+            } else if (isDisliked && userLikedString === '1') {
+                likeActionInput.value = 'remove_dislike';
+            } else if (isLiked && userLikedString === '1') {
+                likeActionInput.value = 'remove_dislike_add_like';
+            } else if (isDisliked && userLikedString === '0') {
+                likeActionInput.value = 'remove_like_add_dislike';
             }
+
+            form.appendChild(likeActionInput);
+            document.body.appendChild(form);
+
+            form.submit();
         };
+
+
+        // Retrieve the value of 'test' from local storage after the page reloads
+        var testValue = localStorage.getItem('test');
+        console.log('Test value after reload:', testValue);
+
+
 
         function redirectToChannel(accountId) {
             event.stopPropagation();
