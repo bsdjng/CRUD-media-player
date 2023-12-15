@@ -298,7 +298,6 @@ function ChangeCreatorSettings()
 function handle_like()
 {
     global $pdo;
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Retrieve data from the POST request
         $videoId = $_POST['videoId'];
         $accountId = $_POST['accountId'];
@@ -362,10 +361,10 @@ function handle_like()
                 break;
             default:
                 echo "Invalid status.";
+                print_r($_POST);
                 break;
         }
     }
-}
 
 function addView($videoId)
 {

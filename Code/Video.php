@@ -201,47 +201,49 @@ if (session_status() === PHP_SESSION_NONE) {
             actionInput.name = 'action';
             actionInput.value = 'handle_like';
 
-            var actionInput = document.createElement('input');
-            actionInput.type = 'hidden';
-            actionInput.name = 'videoId';
-            actionInput.value = '<?php $_GET['id']?>';
+            var videoIdActionInput = document.createElement('input');
+            videoIdActionInput.type = 'hidden';
+            videoIdActionInput.name = 'videoId';
+            videoIdActionInput.value = '<?php echo $_GET['id']; ?>';
 
-            var actionInput = document.createElement('input');
-            actionInput.type = 'hidden';
-            actionInput.name = 'videoId';
-            actionInput.value = '<?php $_SESSION['account_id']?>';
+            var accountIdActionInput = document.createElement('input');
+            accountIdActionInput.type = 'hidden';
+            accountIdActionInput.name = 'accountId';
+            accountIdActionInput.value = '<?php echo $_SESSION['account_id']; ?>';
 
-            var likeActionInput = document.createElement('input');
-            likeActionInput.type = 'hidden';
-            likeActionInput.name = 'likeStatus';
+
+            var likeStatusActionInput = document.createElement('input');
+            likeStatusActionInput.type = 'hidden';
+            likeStatusActionInput.name = 'likeStatus';
 
             if (isLiked) {
                 if (userLikedString === 'null') {
-                    likeActionInput.value = 'add_like';
+                    likeStatusActionInput.value = 'add_like';
                 } else if (userLikedString === '0') {
-                    likeActionInput.value = 'remove_like';
+                    likeStatusActionInput.value = 'remove_like';
                 } else if (userLikedString === '1') {
-                    likeActionInput.value = 'remove_dislike_add_like';
+                    likeStatusActionInput.value = 'remove_dislike_add_like';
                 }
             } else if (isDisliked) {
                 if (userLikedString === 'null') {
-                    likeActionInput.value = 'add_dislike';
+                    likeStatusActionInput.value = 'add_dislike';
                 } else if (userLikedString === '1') {
-                    likeActionInput.value = 'remove_dislike';
+                    likeStatusActionInput.value = 'remove_dislike';
                 } else if (userLikedString === '0') {
-                    likeActionInput.value = 'remove_like_add_dislike';
+                    likeStatusActionInput.value = 'remove_like_add_dislike';
                 }
             }
 
             form.appendChild(actionInput);
-            form.appendChild(likeActionInput);
+            form.appendChild(videoIdActionInput);
+            form.appendChild(accountIdActionInput);
+            form.appendChild(likeStatusActionInput);
             document.body.appendChild(form);
-
             form.submit();
         }
 
         // Attach the event listener to the beforeunload event
-        window.addEventListener('beforeunload', handleUnload);
+        // window.addEventListener('beforeunload', handleUnload);
 
 
 
