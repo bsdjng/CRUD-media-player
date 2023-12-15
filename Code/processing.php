@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 break;
 
             case "handle_like":
-                handle_like($_POST['likeAction']);
+                handle_like();
                 break;
 
             case "addView":

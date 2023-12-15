@@ -170,13 +170,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 updateProgress();
             }
         });
+
+        // LIKE AND DISLIKE JAVASCRIPT CODE
         let userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'null'; ?>;
         let userLikedString = userLiked === null ? 'null' : userLiked.toString();
 
         let isLiked = false;
         let isDisliked = false;
-
-        let test = 0;
 
         function toggleLikeStatus() {
             isLiked = !isLiked;
@@ -189,8 +189,9 @@ if (session_status() === PHP_SESSION_NONE) {
             isLiked = false;
             console.log(isLiked, isDisliked);
         }
+        // handleUnload();
 
-        window.onbeforeunload = function(event) {
+        function handleUnload() {
             var form = document.createElement('form');
             form.method = 'POST';
             form.action = 'processing.php';
@@ -198,39 +199,53 @@ if (session_status() === PHP_SESSION_NONE) {
             var actionInput = document.createElement('input');
             actionInput.type = 'hidden';
             actionInput.name = 'action';
-            actionInput.value = 'handle_like'
+            actionInput.value = 'handle_like';
+
+            var actionInput = document.createElement('input');
+            actionInput.type = 'hidden';
+            actionInput.name = 'videoId';
+            actionInput.value = '<?php $_GET['id']?>';
+
+            var actionInput = document.createElement('input');
+            actionInput.type = 'hidden';
+            actionInput.name = 'videoId';
+            actionInput.value = '<?php $_SESSION['account_id']?>';
 
             var likeActionInput = document.createElement('input');
             likeActionInput.type = 'hidden';
-            likeActionInput.name = 'likeAction';
+            likeActionInput.name = 'likeStatus';
 
-            if (isLiked && userLikedString === 'null') {
-                likeActionInput.value = 'add_like';
-            } else if (isLiked && userLikedString === '0') {
-                likeActionInput.value = 'remove_like';
-            } else if (isDisliked && userLikedString === 'null') {
-                likeActionInput.value = 'add_dislike';
-            } else if (isDisliked && userLikedString === '1') {
-                likeActionInput.value = 'remove_dislike';
-            } else if (isLiked && userLikedString === '1') {
-                likeActionInput.value = 'remove_dislike_add_like';
-            } else if (isDisliked && userLikedString === '0') {
-                likeActionInput.value = 'remove_like_add_dislike';
+            if (isLiked) {
+                if (userLikedString === 'null') {
+                    likeActionInput.value = 'add_like';
+                } else if (userLikedString === '0') {
+                    likeActionInput.value = 'remove_like';
+                } else if (userLikedString === '1') {
+                    likeActionInput.value = 'remove_dislike_add_like';
+                }
+            } else if (isDisliked) {
+                if (userLikedString === 'null') {
+                    likeActionInput.value = 'add_dislike';
+                } else if (userLikedString === '1') {
+                    likeActionInput.value = 'remove_dislike';
+                } else if (userLikedString === '0') {
+                    likeActionInput.value = 'remove_like_add_dislike';
+                }
             }
 
+            form.appendChild(actionInput);
             form.appendChild(likeActionInput);
             document.body.appendChild(form);
 
             form.submit();
-        };
+        }
 
-
-        // Retrieve the value of 'test' from local storage after the page reloads
-        var testValue = localStorage.getItem('test');
-        console.log('Test value after reload:', testValue);
+        // Attach the event listener to the beforeunload event
+        window.addEventListener('beforeunload', handleUnload);
 
 
 
+        // REDIRECT TO CHANNEL
         function redirectToChannel(accountId) {
             event.stopPropagation();
             window.location.href = "Account.php?id=" + accountId;
