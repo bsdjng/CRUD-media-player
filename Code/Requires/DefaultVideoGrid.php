@@ -1,3 +1,6 @@
+<head>
+    <link rel="stylesheet" href="Css/DefaultVideoGrid.css">
+</head>
 <div class="MediaGrid">
     <?php
     $sqlVideos = "SELECT v.id, v.account_id, v.video_name, v.views, v.thumbnail_image, v.created_at, a.username, a.profile_picture 

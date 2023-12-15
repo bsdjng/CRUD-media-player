@@ -1,9 +1,11 @@
 <?php
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require("Requires/Connection.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    var_dump($_POST);
     // Check if the action is set in the POST data
     if (isset($_POST["action"])) {
         $action = $_POST["action"];
@@ -17,6 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             case "login":
                 // Handle user login
                 handleLogin();
+                break;
+
+            case "search":
+                // Handle user Search
+                handleSearch();
                 break;
 
             case "ChangeCreatorSettings":
@@ -221,6 +228,15 @@ function handleLogin()
         echo "Invalid request method.";
     }
 }
+
+function handleSearch(){
+    if (empty($_POST['searchQuery'])) {
+        header("Location: main.php");
+    } else {
+        $searchValue = $_POST['searchQuery'];
+    header("Location: main.php?search=" . urlencode($searchValue));
+    exit;
+}}
 
 function handleAddComment()
 {
