@@ -88,86 +88,8 @@ body {
     font-size: 0.9rem;
 }
 
-
-
-/* alles hieronder is van Account.php */
-.AccountInformation {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
-    background-color: #22303C;
-}
-
-.Banner {
-    margin-top: 1%;
-    border-radius: 20px;
-    width: 100%;
-    aspect-ratio: 2560 / 423;
-    /* max-height: 200px; */
-    object-fit: fill;
-}
-
-/* .CurrentAccountPFP {
-    height: 250px;
-    width: 250px;
-    margin: 10px;
-    background-position: center;
-    background-size: cover;
-    object-fit: cover;
-    border-radius: 50%;
-    background-color: rgb(30, 44, 56);
-} */
-
-.CurrentAccountPFP {
-    width: 30%;
-    max-width: 250px; /* Set a maximum width */
-    position: relative;
-    overflow: hidden;
-    background-color: rgb(30, 44, 56);
-    border-radius: 50%; /* Ensure the container is circular */
-}
-
-.CurrentAccountPFP img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%; /* Ensure the image inside is also circular */
-}
-
-.Creator{
-    display: flex;
-    flex-direction: row;
-    border-bottom: solid black 3px;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.CurrentCreatorInfo{
-    display:flex;
-    flex-direction: column;
-    justify-content:space-around;
-}
-
-.CurrentCreatorName{
-    font-size: 50px;
-    font-weight: bold;
-}
-
-
 @media only screen and (max-width: 1000px) {
     .AccountInformation{
         width: 100%;
     }
   }
-@media only screen and (max-width: 768px) {
-    .CurrentAccountPFP {
-        width: 100%;
-        max-width: none; /* Remove the maximum width for smaller screens */
-    }
-
-}

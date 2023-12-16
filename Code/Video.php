@@ -25,7 +25,6 @@ if (session_status() === PHP_SESSION_NONE) {
     <?php
     require("Requires/Header.php");
     require("Requires/Connection.php");
-    require("Requires/Search.php");
 
     // $ipAddress = $_SERVER['REMOTE_ADDR'];
 
