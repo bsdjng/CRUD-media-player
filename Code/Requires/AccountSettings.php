@@ -48,15 +48,16 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             <p class="liText">change description:</p>
             <input type="text" name="newDescription" class="FormText" placeholder="<?php echo !empty($account['about_me']) ? $account['about_me'] : 'write about yourself'; ?>" name="newDescription">
         </li>
-
-        <li class="accountFormLi" id="SubmitBtns">
-            <input class="btns" type="submit" form="UpdateAccountform" value="Update account">
-            <form method="post" action="processing.php">
-                <input type="hidden" name="action" value="deleteAccount">
-                <input type="submit" value="Delete account">
-            </form>
-        </li>
     </form>
+    <form method="post" action="processing.php" id="deleteForm">
+        <input type="hidden" name="action" value="deleteAccount">
+    </form>
+
+    <li class="accountFormLi" id="SubmitBtns">
+        <input class="btns" type="submit" form="UpdateAccountform" value="Update account">
+        <input class="btns" type="submit" form="deleteForm" value="Delete account">
+    </li>
+
 
 </dialog>
 

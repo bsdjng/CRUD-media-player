@@ -49,7 +49,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="centerdiv">
                 <div class="video-container">
                     <video id="myVideo" controls ontimeupdate="updateProgress()">
-                        <source src="http://192.168.91.244/CRUD-media-player/Usercontent/<?php echo $video['account_id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
+                        <source src="http://192.168.95.205/CRUD-media-player/Usercontent/<?php echo $video['account_id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
