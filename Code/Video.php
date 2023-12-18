@@ -192,7 +192,7 @@ if (session_status() === PHP_SESSION_NONE) {
         console.log('userLiked:', userLiked);
 
         if (isLiked) {
-            if (userLiked === null) {
+            if (!userLiked) {
                 console.log('add_like');
                 sendAjaxRequest('handle_like', 'add_like');
             } else if (userLiked === false) {
@@ -203,7 +203,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 sendAjaxRequest('handle_like', 'remove_dislike_add_like');
             }
         } else if (isDisliked) {
-            if (userLiked === null) {
+            if (!userLiked) {
                 console.log('add_dislike');
                 sendAjaxRequest('handle_like', 'add_dislike');
             } else if (userLiked === true) {
@@ -224,7 +224,7 @@ if (session_status() === PHP_SESSION_NONE) {
             type: 'POST',
             url: 'processing.php',
             data: {
-                action: 'handle_like',
+                action: action,
                 videoId: videoId,
                 accountId: accountId,
                 likeStatus: likeStatus,
