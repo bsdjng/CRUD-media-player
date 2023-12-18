@@ -32,7 +32,7 @@
 }
 #ProfileDropdownCheckBox{
     opacity: 0;
-    width: 100%;
+    transform: scale(5);
     cursor: pointer;
 }
 
@@ -132,6 +132,9 @@ a {
     font-size: xx-large;
     outline: none;
     color: ghostwhite;
+}
+#HeaderUserLink{
+    font-size: 5vmin;
 }
 
 #SearchBarsubmit {

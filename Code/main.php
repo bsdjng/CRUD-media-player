@@ -7,7 +7,6 @@
     <title>OurTube</title>
     <link rel="stylesheet" href="Css/Main.css">
     <link rel="stylesheet" href="Css/Header.css">
-    <link rel="stylesheet" href="Css/DefaultVideoGrid.css">
     <link rel="stylesheet" href="Css/AccountSettings.css">
     <link rel="stylesheet" href="Css/VideoCreator.css">
 </head>
@@ -17,10 +16,10 @@
     session_start();
     require("Requires/Connection.php");
     require("Requires/Header.php");
-    require("Requires/Search.php");
     if (isset($_GET["search"]) && !empty($_GET["search"])) {
-        $searchValue = $_GET["search"];
-        var_dump($searchValue);
+        // $searchValue = $_GET["search"];
+        // var_dump($searchValue);
+        require("Requires/SearchVideoList.php");
     } else {
         require("Requires/DefaultVideoGrid.php");
     }

@@ -14,6 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="Css/Main.css">
     <link rel="stylesheet" href="Css/Header.css">
     <link rel="stylesheet" href="Css/DefaultVideoGrid.css">
+    <link rel="stylesheet" href="Css/account.css">
     <link rel="stylesheet" href="Css/AccountSettings.css">
     <link rel="stylesheet" href="Css/VideoCreator.css">
 
