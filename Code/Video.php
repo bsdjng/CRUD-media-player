@@ -134,11 +134,11 @@ if (session_status() === PHP_SESSION_NONE) {
 
     ?>
     <script>
-    var video = document.getElementById("myVideo");
-    var hasWatched30Percent = false;
-    var viewAdded = false;
-    var videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
-    var accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
+    let video = document.getElementById("myVideo");
+    let hasWatched30Percent = false;
+    let viewAdded = false;
+    let videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
+    let accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
     
     function updateProgress() {
         if (hasWatched30Percent && !viewAdded) {
@@ -161,7 +161,7 @@ if (session_status() === PHP_SESSION_NONE) {
     }
 
     video.addEventListener('timeupdate', function() {
-        var percentWatched = (video.currentTime / video.duration) * 100;
+        let percentWatched = (video.currentTime / video.duration) * 100;
 
         if (percentWatched >= 30 && !hasWatched30Percent) {
             hasWatched30Percent = true;
@@ -170,51 +170,112 @@ if (session_status() === PHP_SESSION_NONE) {
     });
 
     let userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'null'; ?>;
+    userLiked = String(userLiked); // Convert to string explicitly
+    let originalLikeCount = parseInt(document.getElementById("likeButton").innerText);
+    let originalDislikeCount = parseInt(document.getElementById("dislikeButton").innerText);
+
 
     let isLiked = false;
     let isDisliked = false;
+    checkLikeStatus();
+    
 
     function toggleLikeStatus() {
         isLiked = !isLiked;
         isDisliked = false;
         console.log(isLiked, isDisliked);
+        checkLikeStatus();
     }
 
     function toggleDislikeStatus() {
         isDisliked = !isDisliked;
         isLiked = false;
         console.log(isLiked, isDisliked);
+        checkLikeStatus();
     }
 
-    function handleUnload() {
-        console.log('isLiked:', isLiked);
-        console.log('isDisliked:', isDisliked);
-        console.log('userLiked:', userLiked);
+   
 
-        if (isLiked) {
-            if (!userLiked) {
-                console.log('add_like');
-                sendAjaxRequest('handle_like', 'add_like');
-            } else if (userLiked === false) {
-                console.log('remove_like');
-                sendAjaxRequest('handle_like', 'remove_like');
-            } else if (userLiked === true) {
-                console.log('remove_dislike_add_like');
-                sendAjaxRequest('handle_like', 'remove_dislike_add_like');
+    function checkLikeStatus(){
+        let likeButton = document.getElementById("likeButton");
+        var likeCount = parseInt(likeButton.innerText);
+        let dislikeButton = document.getElementById("dislikeButton");
+        var dislikeCount = parseInt(dislikeButton.innerText);
+        if (userLiked === "false") {
+            if (isLiked == true) {
+                // If userLiked is initially false and isLiked becomes true, like +1
+                likeButton.style.backgroundColor = "blueviolet";
+                likeButton.innerHTML = likeCount + 1;
+            } else if (isLiked == false) {
+                // If userLiked is initially false and isLiked remains false, restore original like count
+                likeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                likeButton.innerHTML = originalLikeCount;
             }
-        } else if (isDisliked) {
-            if (!userLiked) {
-                console.log('add_dislike');
-                sendAjaxRequest('handle_like', 'add_dislike');
-            } else if (userLiked === true) {
-                console.log('remove_dislike');
-                sendAjaxRequest('handle_like', 'remove_dislike');
-            } else if (userLiked === false) {
-                console.log('remove_like_add_dislike');
-                sendAjaxRequest('handle_like', 'remove_like_add_dislike');
+
+            if (isDisliked == true) {
+                // If userLiked is initially false and isDisliked becomes true, dislike +1
+                dislikeButton.style.backgroundColor = "blueviolet";
+                dislikeButton.innerText = dislikeCount + 1;
+            } else if (isDisliked == false) {
+                // If userLiked is initially false and isDisliked remains false, restore original dislike count
+                dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                dislikeButton.innerText = originalDislikeCount;
             }
-        } else {
-            console.log('does not edit anything, or error!');
+        } else if (userLiked === "0") {
+            if (isLiked == true) {
+                // If userLiked is initially 0 and isLiked becomes true, like -1
+                likeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                likeButton.innerHTML = likeCount - 1;
+            } else {
+                // If userLiked is initially 0 and isLiked remains false, restore original like count
+                likeButton.style.backgroundColor = "blueviolet";
+                likeButton.innerHTML = likeCount;
+            }
+
+            if (isDisliked == true && isLiked == false) {
+                // If userLiked is initially 0 and isDisliked becomes true while isLiked is false,
+                // dislike +1, like -1
+                dislikeButton.style.backgroundColor = "blueviolet";
+                dislikeButton.innerText = dislikeCount + 1;
+                likeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                likeButton.innerHTML = likeCount - 1;
+            }
+        } else if (userLiked === "1") {
+            if (isDisliked == true) {
+                // If userLiked is initially 1 and isDisliked becomes true, dislike -1
+                dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                dislikeButton.innerHTML = dislikeCount - 1;
+            } else {
+                // If userLiked is initially 1 and isDisliked remains false, restore original dislike count
+                dislikeButton.style.backgroundColor = "blueviolet";
+                dislikeButton.innerText = dislikeCount;
+            }
+
+            if (isLiked == true && isDisliked == false) {
+                // If userLiked is initially 1 and isLiked becomes true while isDisliked is false,
+                // like +1, dislike -1
+                likeButton.style.backgroundColor = "blueviolet";
+                likeButton.innerHTML = likeCount + 1;
+                dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                dislikeButton.innerHTML = dislikeCount - 1;
+            }
+        }
+    }
+
+    window.addEventListener('beforeunload', function () {
+        // Call your handleUnload function here before the page is unloaded
+        handleUnload();
+    });
+
+    function handleUnload() {
+        console.log(isLiked, isDisliked);
+
+        if(isLiked){
+            sendAjaxRequest('handle_like', 'Like_status');
+        }else if(isDisliked){
+            sendAjaxRequest('handle_like', 'Dislike_status');
+        }else{
+            console.log('no change in like status or an error accured');
         }
     }
 
@@ -223,24 +284,34 @@ if (session_status() === PHP_SESSION_NONE) {
         jQuery.ajax({
             type: 'POST',
             url: 'processing.php',
+            async: false,
             data: {
                 action: action,
                 videoId: videoId,
                 accountId: accountId,
                 likeStatus: likeStatus,
             },
+            dataType: 'json', // Specify that you expect a JSON response
             success: function (response) {
                 console.log(response);
-                // You can handle the response or additional logic here
+
+                // Check the status and display a message
+                if (response.status === 'success') {
+                    alert(response.message);
+                    // Additional client-side logic if needed
+                } else {
+                    alert('Error: ' + response.message);
+                }
             },
-            error: function (error) {
-                console.error('AJAX request failed: ' + error.statusText);
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('AJAX error: ' + status, error);
             }
         });
     }
 
 
-    window.addEventListener('beforeunload', handleUnload);
+
 
     function redirectToChannel(accountId) {
         event.stopPropagation();

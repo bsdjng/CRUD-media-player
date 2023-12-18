@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require("Requires/Connection.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    var_dump($_POST);
+    // var_dump($_POST);
     // Check if the action is set in the POST data
     if (isset($_POST["action"])) {
         $action = $_POST["action"];
@@ -35,8 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Handle video upload
                 handleVideoUpload();
                 break;
-
-
+                
             case "add_comment":
                 // Handle adding a comment
                 handleAddComment();
@@ -316,71 +315,120 @@ function ChangeCreatorSettings()
 function handle_like()
 {
     global $pdo;
+
     $videoId = $_POST['videoId'];
     $accountId = $_POST['accountId'];
     $likeStatus = $_POST['likeStatus'];
 
-    switch ($likeStatus) {
-        case "add_like":
-            $sqlInsert = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 0)";
-            $stmtInsert = $pdo->prepare($sqlInsert);
-            $stmtInsert->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmtInsert->bindParam(':videoId', $videoId, PDO::PARAM_INT);
-            $stmtInsert->execute();
-            break;
-        case "add_dislike":
-            $sqlInsert = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 1)";
-            $stmtInsert = $pdo->prepare($sqlInsert);
-            $stmtInsert->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmtInsert->bindParam(':videoId', $videoId, PDO::PARAM_INT);
-            $stmtInsert->execute();
-            break;
-        case "remove_like":
-            $sqlDelete = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 0";
-            $stmtDelete = $pdo->prepare($sqlDelete);
-            $stmtDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmtDelete->bindParam(':videoId', $videoId, PDO::PARAM_INT);
-            $stmtDelete->execute();
-            break;
-        case "remove_dislike":
-            $sqlDelete = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 1";
-            $stmtDelete = $pdo->prepare($sqlDelete);
-            $stmtDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmtDelete->bindParam(':videoId', $videoId, PDO::PARAM_INT);
-            $stmtDelete->execute();
-            break;
-        case "remove_like_add_dislike":
-            $sqlRemoveLike = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 0";
-            $stmtRemoveLike = $pdo->prepare($sqlRemoveLike);
-            $stmtRemoveLike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmtRemoveLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
-            $stmtRemoveLike->execute();
+    // Check if the user has liked or disliked the video
+    $sqlCheckLike = "SELECT dislike FROM likes WHERE video_id = :videoId AND account_id = :accountId";
+    $checkLike = $pdo->prepare($sqlCheckLike);
+    $checkLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+    $checkLike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+    $checkLike->execute();
+    $userLiked = $checkLike->fetchColumn();
 
-            $sqlAddDislike = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 1)";
-            $stmtAddDislike = $pdo->prepare($sqlAddDislike);
-            $stmtAddDislike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmtAddDislike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
-            $stmtAddDislike->execute();
-            break;
+    $response = array();
 
-        case "remove_dislike_add_like":
-            $sqlRemoveDislike = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 1";
-            $stmtRemoveDislike = $pdo->prepare($sqlRemoveDislike);
-            $stmtRemoveDislike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmtRemoveDislike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
-            $stmtRemoveDislike->execute();
+        switch ($likeStatus) {
+            case 'Like_status':
+                if($userLiked === false){
+                    // add_like
+                    $sqlInsert = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 0)";
+                    $stmtInsert = $pdo->prepare($sqlInsert);
+                    $stmtInsert->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                    $stmtInsert->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                    $stmtInsert->execute();
 
-            $sqlAddLike = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 0)";
-            $stmtAddLike = $pdo->prepare($sqlAddLike);
-            $stmtAddLike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
-            $stmtAddLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
-            $stmtAddLike->execute();
+                    $response['status'] = 'success';
+                    $response['message'] = 'Like added successfully';
+
+                }else if($userLiked === 0){
+                    // remove_like
+                    $sqlDelete = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 0";
+                    $stmtDelete = $pdo->prepare($sqlDelete);
+                    $stmtDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                    $stmtDelete->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                    $stmtDelete->execute();
+
+                    
+                    $response['status'] = 'success';
+                    $response['message'] = 'Like removed successfully';
+
+                }else if($userLiked === 1){
+                    // remove_dislike_add_like
+                    $sqlRemoveDislike = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 1";
+                    $stmtRemoveDislike = $pdo->prepare($sqlRemoveDislike);
+                    $stmtRemoveDislike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                    $stmtRemoveDislike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                    $stmtRemoveDislike->execute();
+        
+                    $sqlAddLike = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 0)";
+                    $stmtAddLike = $pdo->prepare($sqlAddLike);
+                    $stmtAddLike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                    $stmtAddLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                    $stmtAddLike->execute();
+
+                    $response['status'] = 'success';
+                    $response['message'] = 'Dislike removed and like added successfully';
+                }else{
+                    $response['status'] = 'error';
+                    $response['message'] = 'Invalid like status';
+                }
+                break;
+            case 'Dislike_status':
+                if($userLiked === false){
+                    // add_dislike
+                    $sqlInsert = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 1)";
+                    $stmtInsert = $pdo->prepare($sqlInsert);
+                    $stmtInsert->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                    $stmtInsert->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                    $stmtInsert->execute();
+
+                    $response['status'] = 'success';
+                    $response['message'] = 'Dislike added successfully';
+
+                }else if($userLiked === 1){
+                    // remove_dislike
+                    $sqlDelete = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 1";
+                    $stmtDelete = $pdo->prepare($sqlDelete);
+                    $stmtDelete->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                    $stmtDelete->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                    $stmtDelete->execute();
+
+                    $response['status'] = 'success';
+                    $response['message'] = 'Dislike removed successfully';
+                    
+                }else if($userLiked === 0){
+                    // remove_like_add_dislike
+                    $sqlRemoveLike = "DELETE FROM likes WHERE account_id = :accountId AND video_id = :videoId AND dislike = 0";
+                    $stmtRemoveLike = $pdo->prepare($sqlRemoveLike);
+                    $stmtRemoveLike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                    $stmtRemoveLike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                    $stmtRemoveLike->execute();
+        
+                    $sqlAddDislike = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 1)";
+                    $stmtAddDislike = $pdo->prepare($sqlAddDislike);
+                    $stmtAddDislike->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+                    $stmtAddDislike->bindParam(':videoId', $videoId, PDO::PARAM_INT);
+                    $stmtAddDislike->execute();
+
+                    $response['status'] = 'success';
+                    $response['message'] = 'Like removed and dislike added successfully';
+                }else{
+                    $response['status'] = 'error';
+                    $response['message'] = 'Invalid dislike status';
+                }
+                break;
+            default:
+                echo'invalid like status';
+                $response['status'] = 'error';
+                $response['message'] = 'Default invalid like status';
             break;
-        default:
-            echo "Invalid status.";
-            print_r($_POST);
-            break;
-    }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
 }
 
 function addView($videoId)
