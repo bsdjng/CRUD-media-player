@@ -316,12 +316,11 @@ function ChangeCreatorSettings()
 function handle_like()
 {
     global $pdo;
-    // Retrieve data from the POST request
     $videoId = $_POST['videoId'];
     $accountId = $_POST['accountId'];
-    $status = $_POST['likeStatus'];
+    $likeStatus = $_POST['likeStatus'];
 
-    switch ($status) {
+    switch ($likeStatus) {
         case "add_like":
             $sqlInsert = "INSERT INTO likes (account_id, video_id, dislike) VALUES (:accountId, :videoId, 0)";
             $stmtInsert = $pdo->prepare($sqlInsert);

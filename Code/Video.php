@@ -134,124 +134,120 @@ if (session_status() === PHP_SESSION_NONE) {
 
     ?>
     <script>
-        var video = document.getElementById("myVideo");
-        var hasWatched30Percent = false;
-        var viewAdded = false;
-        var videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
-        var accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
-
-        function updateProgress() {
-            if (hasWatched30Percent && !viewAdded) {
-                jQuery.ajax({
-                    type: 'POST',
-                    url: 'processing.php',
-                    data: {
-                        action: 'addView',
-                        videoId: videoId,
-                    },
-                    success: function(response) {
-                        console.log("updateProgress() called");
-                        viewAdded = true;
-                    },
-                    error: function(error) {
-                        console.error('AJAX request failed: ' + error.statusText);
-                    }
-                });
-            }
+    var video = document.getElementById("myVideo");
+    var hasWatched30Percent = false;
+    var viewAdded = false;
+    var videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
+    var accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
+    
+    function updateProgress() {
+        if (hasWatched30Percent && !viewAdded) {
+            jQuery.ajax({
+                type: 'POST',
+                url: 'processing.php',
+                data: {
+                    action: 'addView',
+                    videoId: videoId,
+                },
+                success: function(response) {
+                    console.log("updateProgress() called");
+                    viewAdded = true;
+                },
+                error: function(error) {
+                    console.error('AJAX request failed: ' + error.statusText);
+                }
+            });
         }
+    }
 
+    video.addEventListener('timeupdate', function() {
+        var percentWatched = (video.currentTime / video.duration) * 100;
 
-        video.addEventListener('timeupdate', function() {
-            var percentWatched = (video.currentTime / video.duration) * 100;
+        if (percentWatched >= 30 && !hasWatched30Percent) {
+            hasWatched30Percent = true;
+            updateProgress();
+        }
+    });
 
-            if (percentWatched >= 30 && !hasWatched30Percent) {
-                hasWatched30Percent = true;
-                updateProgress();
+    let userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'null'; ?>;
+
+    let isLiked = false;
+    let isDisliked = false;
+
+    function toggleLikeStatus() {
+        isLiked = !isLiked;
+        isDisliked = false;
+        console.log(isLiked, isDisliked);
+    }
+
+    function toggleDislikeStatus() {
+        isDisliked = !isDisliked;
+        isLiked = false;
+        console.log(isLiked, isDisliked);
+    }
+
+    function handleUnload() {
+        console.log('isLiked:', isLiked);
+        console.log('isDisliked:', isDisliked);
+        console.log('userLiked:', userLiked);
+
+        if (isLiked) {
+            if (userLiked === null) {
+                console.log('add_like');
+                sendAjaxRequest('handle_like', 'add_like');
+            } else if (userLiked === false) {
+                console.log('remove_like');
+                sendAjaxRequest('handle_like', 'remove_like');
+            } else if (userLiked === true) {
+                console.log('remove_dislike_add_like');
+                sendAjaxRequest('handle_like', 'remove_dislike_add_like');
+            }
+        } else if (isDisliked) {
+            if (userLiked === null) {
+                console.log('add_dislike');
+                sendAjaxRequest('handle_like', 'add_dislike');
+            } else if (userLiked === true) {
+                console.log('remove_dislike');
+                sendAjaxRequest('handle_like', 'remove_dislike');
+            } else if (userLiked === false) {
+                console.log('remove_like_add_dislike');
+                sendAjaxRequest('handle_like', 'remove_like_add_dislike');
+            }
+        } else {
+            console.log('does not edit anything, or error!');
+        }
+    }
+
+    function sendAjaxRequest(action, likeStatus) {
+        // Use AJAX to send a request to the server
+        jQuery.ajax({
+            type: 'POST',
+            url: 'processing.php',
+            data: {
+                action: 'handle_like',
+                videoId: videoId,
+                accountId: accountId,
+                likeStatus: likeStatus,
+            },
+            success: function (response) {
+                console.log(response);
+                // You can handle the response or additional logic here
+            },
+            error: function (error) {
+                console.error('AJAX request failed: ' + error.statusText);
             }
         });
-
-        // LIKE AND DISLIKE JAVASCRIPT CODE
-        let userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'null'; ?>;
-        let userLikedString = userLiked === null ? 'null' : userLiked.toString();
-
-        let isLiked = false;
-        let isDisliked = false;
-
-        function toggleLikeStatus() {
-            isLiked = !isLiked;
-            isDisliked = false;
-            console.log(isLiked, isDisliked);
-        }
-
-        function toggleDislikeStatus() {
-            isDisliked = !isDisliked;
-            isLiked = false;
-            console.log(isLiked, isDisliked);
-        }
-        // handleUnload();
-
-        function handleUnload() {
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'processing.php';
-
-            var actionInput = document.createElement('input');
-            actionInput.type = 'hidden';
-            actionInput.name = 'action';
-            actionInput.value = 'handle_like';
-
-            var videoIdActionInput = document.createElement('input');
-            videoIdActionInput.type = 'hidden';
-            videoIdActionInput.name = 'videoId';
-            videoIdActionInput.value = '<?php echo $_GET['id']; ?>';
-
-            var accountIdActionInput = document.createElement('input');
-            accountIdActionInput.type = 'hidden';
-            accountIdActionInput.name = 'accountId';
-            accountIdActionInput.value = '<?php echo $_SESSION['account_id']; ?>';
+    }
 
 
-            var likeStatusActionInput = document.createElement('input');
-            likeStatusActionInput.type = 'hidden';
-            likeStatusActionInput.name = 'likeStatus';
+    window.addEventListener('beforeunload', handleUnload);
 
-            if (isLiked) {
-                if (userLikedString === 'null') {
-                    likeStatusActionInput.value = 'add_like';
-                } else if (userLikedString === '0') {
-                    likeStatusActionInput.value = 'remove_like';
-                } else if (userLikedString === '1') {
-                    likeStatusActionInput.value = 'remove_dislike_add_like';
-                }
-            } else if (isDisliked) {
-                if (userLikedString === 'null') {
-                    likeStatusActionInput.value = 'add_dislike';
-                } else if (userLikedString === '1') {
-                    likeStatusActionInput.value = 'remove_dislike';
-                } else if (userLikedString === '0') {
-                    likeStatusActionInput.value = 'remove_like_add_dislike';
-                }
-            }
+    function redirectToChannel(accountId) {
+        event.stopPropagation();
+        window.location.href = "Account.php?id=" + accountId;
+    }
+</script>
 
-            form.appendChild(actionInput);
-            form.appendChild(videoIdActionInput);
-            form.appendChild(accountIdActionInput);
-            form.appendChild(likeStatusActionInput);
-            document.body.appendChild(form);
-            form.submit();
-        }
-
-        // Attach the event listener to the beforeunload event
-        // window.addEventListener('beforeunload', handleUnload);
-
-
-
-        // REDIRECT TO CHANNEL
-        function redirectToChannel(accountId) {
-            event.stopPropagation();
-            window.location.href = "Account.php?id=" + accountId;
-        }
-    </script>
 </body>
 
 </html>
