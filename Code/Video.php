@@ -288,7 +288,7 @@ if (session_status() === PHP_SESSION_NONE) {
             data: {
                 action: action,
                 videoId: videoId,
-                accountId: accountId,
+                // accountId: accountId,
                 likeStatus: likeStatus,
             },
             dataType: 'json', // Specify that you expect a JSON response

@@ -317,7 +317,7 @@ function handle_like()
     global $pdo;
 
     $videoId = $_POST['videoId'];
-    $accountId = $_POST['accountId'];
+    $accountId = $_SESSION['account_id'];
     $likeStatus = $_POST['likeStatus'];
 
     // Check if the user has liked or disliked the video
