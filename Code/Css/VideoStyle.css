@@ -95,6 +95,20 @@ video {
 .title{
     font-size: 50px;
     font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: auto;
+}
+#editVideo{
+    background-image: url(../../images/edit.png);
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    width: 5%;
 }
 
 .creator{
@@ -134,5 +148,8 @@ video {
 @media only screen and (max-width: 768px) {
     .title{
         font-size: 35px;
+    }
+    #editVideo{
+        width: 15%;
     }
   }
