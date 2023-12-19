@@ -33,7 +33,7 @@ if (session_status() === PHP_SESSION_NONE) {
         $videoId = $_GET['id'];
 
         // Query to retrieve video information with account details
-        $sqlVideos = "SELECT v.id, v.account_id, v.video_name, v.views, v.video_description, v.created_at, a.username, a.profile_picture 
+        $sqlVideos = "SELECT v.id, v.account_id, v.video_name, v.views, v.video_description, v.created_at, v.thumbnail_image,a.username, a.profile_picture 
                       FROM videos v 
                       JOIN accounts a ON v.account_id = a.id 
                       WHERE v.id = :videoId";
@@ -49,7 +49,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="centerdiv">
                 <div class="video-container">
                     <video id="myVideo" controls ontimeupdate="updateProgress()">
-                        <source src="http://192.168.95.205/CRUD-media-player/Usercontent/<?php echo $video['account_id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
+                        <source src="http://192.168.91.244/CRUD-media-player/Usercontent/<?php echo $video['account_id']; ?>/<?php echo $videoId . '.mp4' ?>" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -66,6 +66,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             echo '<div class="PFP" style="background-image: url(\'' . $imageSrc . '\');"></div>';
                             echo '<p class="creator_name">' . $video['username'] . '</p>';
                             ?>
+
                         </div>
                         <div class="Like_dislike_btn">
                             <?php
@@ -115,6 +116,11 @@ if (session_status() === PHP_SESSION_NONE) {
                     </div>
                 </div>
                 <div class="text-container">
+                    <?php if ($video['account_id'] == $_SESSION['account_id']) { ?>
+                        <button class="Dropdown_link" id="DropdownButtenSplit" onclick="openEditVideoDialog()">
+                            <?php require 'Requires/editVideoInfo.php'; ?>
+                        </button>
+                    <?php } ?>
                     <?php
                     require('Requires/Comments.php');
                     ?>
@@ -134,190 +140,190 @@ if (session_status() === PHP_SESSION_NONE) {
 
     ?>
     <script>
-    let video = document.getElementById("myVideo");
-    let hasWatched30Percent = false;
-    let viewAdded = false;
-    let videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
-    let accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
-    
-    function updateProgress() {
-        if (hasWatched30Percent && !viewAdded) {
+        let video = document.getElementById("myVideo");
+        let hasWatched30Percent = false;
+        let viewAdded = false;
+        let videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
+        let accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
+
+        function updateProgress() {
+            if (hasWatched30Percent && !viewAdded) {
+                jQuery.ajax({
+                    type: 'POST',
+                    url: 'processing.php',
+                    data: {
+                        action: 'addView',
+                        videoId: videoId,
+                    },
+                    success: function(response) {
+                        console.log("updateProgress() called");
+                        viewAdded = true;
+                    },
+                    error: function(error) {
+                        console.error('AJAX request failed: ' + error.statusText);
+                    }
+                });
+            }
+        }
+
+        video.addEventListener('timeupdate', function() {
+            let percentWatched = (video.currentTime / video.duration) * 100;
+
+            if (percentWatched >= 30 && !hasWatched30Percent) {
+                hasWatched30Percent = true;
+                updateProgress();
+            }
+        });
+
+        let userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'null'; ?>;
+        userLiked = String(userLiked); // Convert to string explicitly
+        let originalLikeCount = parseInt(document.getElementById("likeButton").innerText);
+        let originalDislikeCount = parseInt(document.getElementById("dislikeButton").innerText);
+
+
+        let isLiked = false;
+        let isDisliked = false;
+        checkLikeStatus();
+
+
+        function toggleLikeStatus() {
+            isLiked = !isLiked;
+            isDisliked = false;
+            console.log(isLiked, isDisliked);
+            checkLikeStatus();
+        }
+
+        function toggleDislikeStatus() {
+            isDisliked = !isDisliked;
+            isLiked = false;
+            console.log(isLiked, isDisliked);
+            checkLikeStatus();
+        }
+
+
+
+        function checkLikeStatus() {
+            let likeButton = document.getElementById("likeButton");
+            var likeCount = parseInt(likeButton.innerText);
+            let dislikeButton = document.getElementById("dislikeButton");
+            var dislikeCount = parseInt(dislikeButton.innerText);
+            if (userLiked === "false") {
+                if (isLiked == true) {
+                    // If userLiked is initially false and isLiked becomes true, like +1
+                    likeButton.style.backgroundColor = "blueviolet";
+                    likeButton.innerHTML = likeCount + 1;
+                } else if (isLiked == false) {
+                    // If userLiked is initially false and isLiked remains false, restore original like count
+                    likeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                    likeButton.innerHTML = originalLikeCount;
+                }
+
+                if (isDisliked == true) {
+                    // If userLiked is initially false and isDisliked becomes true, dislike +1
+                    dislikeButton.style.backgroundColor = "blueviolet";
+                    dislikeButton.innerText = dislikeCount + 1;
+                } else if (isDisliked == false) {
+                    // If userLiked is initially false and isDisliked remains false, restore original dislike count
+                    dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                    dislikeButton.innerText = originalDislikeCount;
+                }
+            } else if (userLiked === "0") {
+                if (isLiked == true) {
+                    // If userLiked is initially 0 and isLiked becomes true, like -1
+                    likeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                    likeButton.innerHTML = likeCount - 1;
+                } else {
+                    // If userLiked is initially 0 and isLiked remains false, restore original like count
+                    likeButton.style.backgroundColor = "blueviolet";
+                    likeButton.innerHTML = likeCount;
+                }
+
+                if (isDisliked == true && isLiked == false) {
+                    // If userLiked is initially 0 and isDisliked becomes true while isLiked is false,
+                    // dislike +1, like -1
+                    dislikeButton.style.backgroundColor = "blueviolet";
+                    dislikeButton.innerText = dislikeCount + 1;
+                    likeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                    likeButton.innerHTML = likeCount - 1;
+                }
+            } else if (userLiked === "1") {
+                if (isDisliked == true) {
+                    // If userLiked is initially 1 and isDisliked becomes true, dislike -1
+                    dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                    dislikeButton.innerHTML = dislikeCount - 1;
+                } else {
+                    // If userLiked is initially 1 and isDisliked remains false, restore original dislike count
+                    dislikeButton.style.backgroundColor = "blueviolet";
+                    dislikeButton.innerText = dislikeCount;
+                }
+
+                if (isLiked == true && isDisliked == false) {
+                    // If userLiked is initially 1 and isLiked becomes true while isDisliked is false,
+                    // like +1, dislike -1
+                    likeButton.style.backgroundColor = "blueviolet";
+                    likeButton.innerHTML = likeCount + 1;
+                    dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
+                    dislikeButton.innerHTML = dislikeCount - 1;
+                }
+            }
+        }
+
+        window.addEventListener('beforeunload', function() {
+            // Call your handleUnload function here before the page is unloaded
+            handleUnload();
+        });
+
+        function handleUnload() {
+            console.log(isLiked, isDisliked);
+
+            if (isLiked) {
+                sendAjaxRequest('handle_like', 'Like_status');
+            } else if (isDisliked) {
+                sendAjaxRequest('handle_like', 'Dislike_status');
+            } else {
+                console.log('no change in like status or an error accured');
+            }
+        }
+
+        function sendAjaxRequest(action, likeStatus) {
+            // Use AJAX to send a request to the server
             jQuery.ajax({
                 type: 'POST',
                 url: 'processing.php',
+                async: false,
                 data: {
-                    action: 'addView',
+                    action: action,
                     videoId: videoId,
+                    // accountId: accountId,
+                    likeStatus: likeStatus,
                 },
+                dataType: 'json', // Specify that you expect a JSON response
                 success: function(response) {
-                    console.log("updateProgress() called");
-                    viewAdded = true;
+                    console.log(response);
+
+                    // Check the status and display a message
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        // Additional client-side logic if needed
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
                 },
-                error: function(error) {
-                    console.error('AJAX request failed: ' + error.statusText);
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error('AJAX error: ' + status, error);
                 }
             });
         }
-    }
 
-    video.addEventListener('timeupdate', function() {
-        let percentWatched = (video.currentTime / video.duration) * 100;
 
-        if (percentWatched >= 30 && !hasWatched30Percent) {
-            hasWatched30Percent = true;
-            updateProgress();
+
+
+        function redirectToChannel(accountId) {
+            event.stopPropagation();
+            window.location.href = "Account.php?id=" + accountId;
         }
-    });
-
-    let userLiked = <?php echo isset($userLiked) ? json_encode($userLiked) : 'null'; ?>;
-    userLiked = String(userLiked); // Convert to string explicitly
-    let originalLikeCount = parseInt(document.getElementById("likeButton").innerText);
-    let originalDislikeCount = parseInt(document.getElementById("dislikeButton").innerText);
-
-
-    let isLiked = false;
-    let isDisliked = false;
-    checkLikeStatus();
-    
-
-    function toggleLikeStatus() {
-        isLiked = !isLiked;
-        isDisliked = false;
-        console.log(isLiked, isDisliked);
-        checkLikeStatus();
-    }
-
-    function toggleDislikeStatus() {
-        isDisliked = !isDisliked;
-        isLiked = false;
-        console.log(isLiked, isDisliked);
-        checkLikeStatus();
-    }
-
-   
-
-    function checkLikeStatus(){
-        let likeButton = document.getElementById("likeButton");
-        var likeCount = parseInt(likeButton.innerText);
-        let dislikeButton = document.getElementById("dislikeButton");
-        var dislikeCount = parseInt(dislikeButton.innerText);
-        if (userLiked === "false") {
-            if (isLiked == true) {
-                // If userLiked is initially false and isLiked becomes true, like +1
-                likeButton.style.backgroundColor = "blueviolet";
-                likeButton.innerHTML = likeCount + 1;
-            } else if (isLiked == false) {
-                // If userLiked is initially false and isLiked remains false, restore original like count
-                likeButton.style.backgroundColor = "rgb(70, 84, 96)";
-                likeButton.innerHTML = originalLikeCount;
-            }
-
-            if (isDisliked == true) {
-                // If userLiked is initially false and isDisliked becomes true, dislike +1
-                dislikeButton.style.backgroundColor = "blueviolet";
-                dislikeButton.innerText = dislikeCount + 1;
-            } else if (isDisliked == false) {
-                // If userLiked is initially false and isDisliked remains false, restore original dislike count
-                dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
-                dislikeButton.innerText = originalDislikeCount;
-            }
-        } else if (userLiked === "0") {
-            if (isLiked == true) {
-                // If userLiked is initially 0 and isLiked becomes true, like -1
-                likeButton.style.backgroundColor = "rgb(70, 84, 96)";
-                likeButton.innerHTML = likeCount - 1;
-            } else {
-                // If userLiked is initially 0 and isLiked remains false, restore original like count
-                likeButton.style.backgroundColor = "blueviolet";
-                likeButton.innerHTML = likeCount;
-            }
-
-            if (isDisliked == true && isLiked == false) {
-                // If userLiked is initially 0 and isDisliked becomes true while isLiked is false,
-                // dislike +1, like -1
-                dislikeButton.style.backgroundColor = "blueviolet";
-                dislikeButton.innerText = dislikeCount + 1;
-                likeButton.style.backgroundColor = "rgb(70, 84, 96)";
-                likeButton.innerHTML = likeCount - 1;
-            }
-        } else if (userLiked === "1") {
-            if (isDisliked == true) {
-                // If userLiked is initially 1 and isDisliked becomes true, dislike -1
-                dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
-                dislikeButton.innerHTML = dislikeCount - 1;
-            } else {
-                // If userLiked is initially 1 and isDisliked remains false, restore original dislike count
-                dislikeButton.style.backgroundColor = "blueviolet";
-                dislikeButton.innerText = dislikeCount;
-            }
-
-            if (isLiked == true && isDisliked == false) {
-                // If userLiked is initially 1 and isLiked becomes true while isDisliked is false,
-                // like +1, dislike -1
-                likeButton.style.backgroundColor = "blueviolet";
-                likeButton.innerHTML = likeCount + 1;
-                dislikeButton.style.backgroundColor = "rgb(70, 84, 96)";
-                dislikeButton.innerHTML = dislikeCount - 1;
-            }
-        }
-    }
-
-    window.addEventListener('beforeunload', function () {
-        // Call your handleUnload function here before the page is unloaded
-        handleUnload();
-    });
-
-    function handleUnload() {
-        console.log(isLiked, isDisliked);
-
-        if(isLiked){
-            sendAjaxRequest('handle_like', 'Like_status');
-        }else if(isDisliked){
-            sendAjaxRequest('handle_like', 'Dislike_status');
-        }else{
-            console.log('no change in like status or an error accured');
-        }
-    }
-
-    function sendAjaxRequest(action, likeStatus) {
-        // Use AJAX to send a request to the server
-        jQuery.ajax({
-            type: 'POST',
-            url: 'processing.php',
-            async: false,
-            data: {
-                action: action,
-                videoId: videoId,
-                // accountId: accountId,
-                likeStatus: likeStatus,
-            },
-            dataType: 'json', // Specify that you expect a JSON response
-            success: function (response) {
-                console.log(response);
-
-                // Check the status and display a message
-                if (response.status === 'success') {
-                    alert(response.message);
-                    // Additional client-side logic if needed
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-                console.error('AJAX error: ' + status, error);
-            }
-        });
-    }
-
-
-
-
-    function redirectToChannel(accountId) {
-        event.stopPropagation();
-        window.location.href = "Account.php?id=" + accountId;
-    }
-</script>
+    </script>
 
 </body>
 
