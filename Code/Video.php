@@ -58,12 +58,12 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php
                         echo $video['video_name'];
                         ?>
-                            <?php if ($video['account_id'] == $_SESSION['account_id']) { ?>
-                                <button id="editVideo" onclick="openEditVideoDialog()">
-                                    <?php require 'Requires/editVideoInfo.php'; ?>
-                                </button>
-                            <?php } ?>
-                            
+                        <?php if ($video['account_id'] == $_SESSION['account_id']) { ?>
+                            <button id="editVideo" onclick="openEditVideoDialog()">
+                                <?php require 'Requires/editVideoInfo.php'; ?>
+                            </button>
+                        <?php } ?>
+
                     </div>
                     <div class="creator">
                         <div id="PFP_NAME" onclick="redirectToChannel('<?php echo $video['account_id']; ?>')">
@@ -122,7 +122,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
                 <div class="text-container">
                     <?php
-                        require('Requires/Comments.php');
+                    require('Requires/Comments.php');
                     ?>
                 </div>
             </div>
@@ -145,7 +145,7 @@ if (session_status() === PHP_SESSION_NONE) {
         let viewAdded = false;
         let videoId = <?php echo isset($videoId) ? json_encode($videoId) : 'null'; ?>;
         let accountId = <?php echo isset($_SESSION['account_id']) ? json_encode($_SESSION['account_id']) : 'null'; ?>;
-        
+
         function updateProgress() {
             if (hasWatched30Percent && !viewAdded) {
                 jQuery.ajax({
@@ -182,13 +182,13 @@ if (session_status() === PHP_SESSION_NONE) {
         let isLiked = false;
         let isDisliked = false;
         updateButtonStyles();
-        
 
-        function updateButtonStyles(){
+
+        function updateButtonStyles() {
             if (previousState === "0") {
-            // Previous state was "0", handling dislike case
-            dislikeButton.style.backgroundColor = isDisliked ? "blueviolet" : "rgb(70, 84, 96)";
-            likeButton.style.backgroundColor = isLiked ? "rgb(70, 84, 96)" : (isDisliked ? "rgb(70, 84, 96)" : "blueviolet");
+                // Previous state was "0", handling dislike case
+                dislikeButton.style.backgroundColor = isDisliked ? "blueviolet" : "rgb(70, 84, 96)";
+                likeButton.style.backgroundColor = isLiked ? "rgb(70, 84, 96)" : (isDisliked ? "rgb(70, 84, 96)" : "blueviolet");
             } else if (previousState === "1") {
                 // Previous state was "1", handling like case
                 likeButton.style.backgroundColor = isLiked ? "blueviolet" : "rgb(70, 84, 96)";
@@ -214,7 +214,7 @@ if (session_status() === PHP_SESSION_NONE) {
             updateButtonStyles();
         }
 
-        window.addEventListener('beforeunload', function () {
+        window.addEventListener('beforeunload', function() {
             // Call your handleUnload function here before the page is unloaded
             handleUnload();
         });
@@ -222,11 +222,11 @@ if (session_status() === PHP_SESSION_NONE) {
         function handleUnload() {
             console.log(isLiked, isDisliked);
 
-            if(isLiked){
+            if (isLiked) {
                 sendAjaxRequest('handle_like', 'Like_status');
-            }else if(isDisliked){
+            } else if (isDisliked) {
                 sendAjaxRequest('handle_like', 'Dislike_status');
-            }else{
+            } else {
                 console.log('no change in like status or an error accured');
             }
         }
@@ -244,7 +244,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     likeStatus: likeStatus,
                 },
                 dataType: 'json', // Specify that you expect a JSON response
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
 
                     // Check the status and display a message
@@ -255,7 +255,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         alert('Error: ' + response.message);
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     // Handle errors
                     console.error('AJAX error: ' + status, error);
                 }
@@ -266,7 +266,7 @@ if (session_status() === PHP_SESSION_NONE) {
             event.stopPropagation();
             window.location.href = "Account.php?id=" + accountId;
         }
-</script>
+    </script>
 
 </body>
 

@@ -1,6 +1,7 @@
 body {
     background-color: #22303C;
     color: ghostwhite;
+    overflow-x: hidden;
 }
 
 .MediaGrid {
